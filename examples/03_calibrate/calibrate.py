@@ -5,7 +5,7 @@ import os, numpy, load
 
 # Set some pH-related data members in universe:
 phbuilder.universe.add('ph_constantpH', True)
-phbuilder.universe.add('ph_restrainpH', False)
+phbuilder.universe.add('ph_QQleveling', 0)
 
 # Note: the coefficients we put here do not affect the calibration.
 phbuilder.universe.add('ph_GLU_dvdl', [26.238, -556.92, -106.76, 230.33, -155.89, -24.960])

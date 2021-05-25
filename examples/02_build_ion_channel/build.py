@@ -4,7 +4,7 @@ import phbuilder # Note: preparing this simulation might take a while.
 
 # Set some pH-related data members in universe:
 phbuilder.universe.add('ph_constantpH', True)
-phbuilder.universe.add('ph_restrainpH', True)
+phbuilder.universe.add('ph_QQleveling', 2)
 
 phbuilder.universe.add('ph_GLU_dvdl', [25.65, -558.23, -201.97, 873.77, -1588.05, 1299.02, -436.91])
 phbuilder.universe.add('ph_ASP_dvdl', [40.36, -549.89, -120.65, 283.59, -250.39, 38.67, -12.41])

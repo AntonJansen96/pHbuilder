@@ -179,7 +179,7 @@ def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0],
             file.write("#endif\n")
 
     # Skip this whole step if we don't need it.
-    if not (universe.get('ph_constantpH') and universe.get('ph_QQleveling')):
+    if not (universe.get('ph_constantpH') and universe.get('ph_QQleveling') in [1, 2]):
         utils.update("add_buffer", "either ph_constantpH is False or ph_QQleveling = 0 --> skipping...")
         return
 

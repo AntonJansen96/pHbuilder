@@ -20,16 +20,16 @@ def gen_mdp(Type, nsteps=25000, nstxout=0, posres=False):
 
     # POSITION RESTRAIN SECTION
     if Type in ['EM', 'MD']:
-        if universe.get('ph_constantpH') and universe.get('ph_QQleveling') and posres:
+        if universe.get('ph_constantpH') and universe.get('ph_QQleveling') in [1, 2] and posres:
             addTitle('Position restrain')
             addParam('define', '-DPOSRES -DPOSRES_BUF', 'Position restraints.')
-        elif universe.get('ph_constantpH') and universe.get('ph_QQleveling'):
+        elif universe.get('ph_constantpH') and universe.get('ph_QQleveling') in [1, 2]:
             addTitle('Position restrain')
             addParam('define', '-DPOSRES_BUF', 'Position restraints.')
 
     if (Type in ['NVT', 'NPT']): # position restrain temp and press coupling.
         addTitle('Position restrain')
-        if universe.get('ph_constantpH') and universe.get('ph_QQleveling'):
+        if universe.get('ph_constantpH') and universe.get('ph_QQleveling') in [1, 2]:
             addParam('define', '-DPOSRES -DPOSRES_BUF', 'Position restraints.')
         else:
             addParam('define', '-DPOSRES', 'Position restraints.')
@@ -51,7 +51,7 @@ def gen_mdp(Type, nsteps=25000, nstxout=0, posres=False):
     addParam('nsteps', nsteps, '%.1f ns.' % ((dt * nsteps)/1000.0))
 
     # We restrain the COM to prevent protein from coming too close to the BUFs.
-    if Type == 'MD' and universe.get('ph_QQleveling'):
+    if Type == 'MD' and universe.get('ph_QQleveling') in [1, 2]:
         addParam('comm-mode', 'Linear', 'Remove center of mass translation.')
         addParam('comm-grps', 'Protein Non-Protein')
 

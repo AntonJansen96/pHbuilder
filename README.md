@@ -191,9 +191,5 @@
 </tbody>
 </table>
 
-<b>Known issues</b>
-* You can currently use `protein.add_buf()` to add less buffer molecules than you have titratable groups, however for various reasons this is a bad idea.
-
 <b>To-do</b>
-* Enable the charge leveling scheme termed "charge coupling", i.e. put charge on an "ion".
 * Enable multistate.

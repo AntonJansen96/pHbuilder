@@ -1,7 +1,7 @@
 import os, universe, utils, md, protein
 
 def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaInit=0.5):
-    # Hardcoded stuff
+    # HARDCODED STUFF FOR PROTONATABLE RESIDUES ################################
     GLU_pKa   = 4.25
     GLU_atoms = [' CG ', ' CD ', ' OE1', ' OE2', ' HE2'] # atoms part of model
     GLU_qqA   = [-0.21 ,  0.75 ,  -0.55,  -0.61,  0.44 ] # protonated charge
@@ -12,22 +12,34 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
     ASP_qqA   = [-0.21 ,  0.75 ,  -0.55,  -0.61,  0.44 ] # protonated charge
     ASP_qqB   = [-0.28 ,  0.62 ,  -0.76,  -0.76,  0.00 ] # deprotonated charge
 
-    # BUF_qqA   = [-0.0656, 0.5328, 0.5328] # hardcoded for water buffer
-    # BUF_qqB   = [-0.8476, 0.4238, 0.4238] # hardcoded for water buffer
-    BUF_qqA = universe.get('ph_bufqqA')
-    BUF_qqB = universe.get('ph_bufqqB')
+    # HEAD #####################################################################
 
     # Skip this entire step if ph_constantpH is false.
     if (not universe.get('ph_constantpH')):
         utils.update("gen_constantpH", "ph_constantpH is False --> skipping...")
         return
 
-    # Load dV/dl coefficients
+    # If we use a charge-leveling scheme, we need the charge states:
+    if (universe.get('ph_QQleveling') in [1, 2]):
+        # BUF_qqA = [-0.0656, 0.5328, 0.5328] # previously hardcoded for water buffer
+        # BUF_qqB = [-0.8476, 0.4238, 0.4238] # previously hardcoded for water buffer
+        BUF_qqA = universe.get('ph_bufqqA')
+        BUF_qqB = universe.get('ph_bufqqB')
+
+    # If we use "charge-coupling" (1) scheme, extend charge states of GLU, ASP:
+    if (universe.get('ph_QQleveling') == 1):
+        GLU_qqA += BUF_qqB
+        GLU_qqB += BUF_qqA
+        ASP_qqA += BUF_qqB
+        ASP_qqB += BUF_qqA
+
+    # If we use "charge-constraining" (2) scheme, we need ph_BUF_dvdl:
+    if (universe.get('ph_QQleveling') == 2):
+        BUF_dvdl = universe.get('ph_BUF_dvdl')
+
+    # Load other dV/dl coefficients:
     GLU_dvdl = universe.get('ph_GLU_dvdl')
     ASP_dvdl = universe.get('ph_ASP_dvdl')
-
-    if (universe.get('ph_QQleveling')):
-        BUF_dvdl = universe.get('ph_BUF_dvdl')
 
     # Check whether MD.mdp exists.
     if (not os.path.isfile("MD.mdp")):
@@ -39,6 +51,8 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
         utils.update("gen_constantpH", "index.ndx does not exist, creating...")
         utils.generate_index()
 
+    ############################################################################
+    
     file = open('MD.mdp', 'a')
 
     # Formatting function.
@@ -65,7 +79,7 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
     if cal:
         addParam('lambda-dynamics-calibration', 'yes')
 
-    if universe.get('ph_QQleveling'):
+    if (universe.get('ph_QQleveling') == 2):
         addParam('lambda-dynamics-charge-constraints', 'yes')
 
     # Compile a list of acidic residues and their ResIDs.
@@ -87,12 +101,14 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
     if ('ASP' in acidicResidueNameList):
         acidicResidueTypeList.append('ASP')
 
-    if universe.get('ph_QQleveling'):         # If we restrain the charge 
-        acidicResidueTypeList.append('BUF')   # we also have BUF.
+    # If we use "charge-restraining" we also have the BUF residue-type:
+    if (universe.get('ph_QQleveling') == 2):  
+        acidicResidueTypeList.append('BUF')
 
     addParam('lambda-dynamics-number-lambda-residues', len(acidicResidueTypeList))
     
-    if universe.get('ph_QQleveling'):
+    # If we use "charge-restraining" we also have the BUF lambda-group:
+    if (universe.get('ph_QQleveling') == 2):
         addParam('lambda-dynamics-number-atom-collections', len(acidicResidueNameList) + 1)
     else:
         addParam('lambda-dynamics-number-atom-collections', len(acidicResidueNameList))
@@ -151,7 +167,7 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
         addParam('lambda-dynamics-atom-set%s-index-group-name'      % (number), indexName)
         addParam('lambda-dynamics-atom-set%s-initial-lambda'        % (number), lambdaInit)
         
-        if universe.get('ph_QQleveling'):
+        if (universe.get('ph_QQleveling') == 2):
             addParam('lambda-dynamics-atom-set%s-charge-restraint-group-index' % (number), 1)
 
         if (name == 'BUF'):
@@ -168,7 +184,7 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
                         'LAMBDA%s' % (idx + 1)
                         )
 
-    if universe.get('ph_QQleveling'):
+    if (universe.get('ph_QQleveling') == 2):
         writeResBlock(
                         len(acidicResidueNameList) + 1,
                         'BUF',
@@ -182,49 +198,59 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
 
     utils.update("gen_constantpH", "Writing lambda index groups to index.ndx...")
 
+    # If we use a charge-leveling scheme, we need a list of atomIndices of the BUFs:
+    if (universe.get('ph_QQleveling') in [1, 2]):
+        bufferAtomIndexList = []
+
+        atomCount = 1
+        for residue in universe.get('d_residues'):
+            for atom in residue.d_atoms:
+                if (residue.d_resname == 'BUF'):
+                    bufferAtomIndexList.append(atomCount)
+            
+                atomCount += 1
+
     file = open('index.ndx', 'a') # Append to existing index.ndx
 
-    # Function for adding an indexList to index.ndx
-    def writeTheGroup(number, indexList):
+    # Function for adding an atomIndexList to index.ndx
+    def writeTheGroup(number, atomIndexList):
         file.write('\n[ LAMBDA{} ]\n'.format(number))
-        for index in indexList:
+        for index in atomIndexList:
             file.write('{} '.format(index))
         file.write('\n')
 
-    atomCount = 1   # Keeps track of the atom number.
-    grpNum    = 1   # Keeps track of the group (the LAMBDA%s).
-    
-    for residue in universe.get('d_residues'):       # loop through all residues
+    grpNum = 1 # Keeps track of the group (the LAMBDA%s).
 
-        indexList = []                      # clear indexList
+    atomCount = 1
+    for residue in universe.get('d_residues'):  # loop through all residues
+
+        atomIndexList = []                  # clear atomIndexList
 
         for atom in residue.d_atoms:        # for each residue, loop through the atoms
 
             if (residue.d_resname == 'GLU' and atom in GLU_atoms):
-                indexList.append(atomCount)
+                atomIndexList.append(atomCount)
 
             elif (residue.d_resname == 'ASP' and atom in ASP_atoms):
-                indexList.append(atomCount)
+                atomIndexList.append(atomCount)
 
-            atomCount += 1                  # increment atomcount
+            atomCount += 1                  # increment atomCount
 
-        if (len(indexList) > 0):
-            writeTheGroup(grpNum, indexList)
+        if (len(atomIndexList) > 0):
+            # If we use "charge-coupling" (1), assign the atomIndices of one BUF
+            # to one protonatable lambda residue (use clever list slicing):
+            if (universe.get('ph_QQleveling') == 1):
+                start = (grpNum - 1) * len(BUF_qqA)
+                stop  = start + len(BUF_qqA)
+                atomIndexList += bufferAtomIndexList[start:stop]
+
+            writeTheGroup(grpNum, atomIndexList)
             grpNum += 1
 
-    if universe.get('ph_QQleveling'):
-
-        atomCount = 1; indexList = []
-
-        for residue in universe.get('d_residues'):
-            for atom in residue.d_atoms:
-            
-                if (residue.d_resname == 'BUF'):
-                    indexList.append(atomCount)
-            
-                atomCount += 1
-        
-        writeTheGroup(grpNum, indexList)
+    # If we use "charge-restraining" (2), add everything in bufferAtomIndexList
+    # to the last lambda index group:
+    if (universe.get('ph_QQleveling') == 2):
+        writeTheGroup(grpNum, bufferAtomIndexList)
 
     file.close() # index.ndx
 

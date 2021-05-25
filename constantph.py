@@ -12,8 +12,10 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
     ASP_qqA   = [-0.21 ,  0.75 ,  -0.55,  -0.61,  0.44 ] # protonated charge
     ASP_qqB   = [-0.28 ,  0.62 ,  -0.76,  -0.76,  0.00 ] # deprotonated charge
 
-    BUF_qqA   = [-0.0656, 0.5328, 0.5328]
-    BUF_qqB   = [-0.8476, 0.4238, 0.4238]
+    # BUF_qqA   = [-0.0656, 0.5328, 0.5328] # hardcoded for water buffer
+    # BUF_qqB   = [-0.8476, 0.4238, 0.4238] # hardcoded for water buffer
+    BUF_qqA = universe.get('ph_bufqqA')
+    BUF_qqB = universe.get('ph_bufqqB')
 
     # Skip this entire step if ph_constantpH is false.
     if (not universe.get('ph_constantpH')):

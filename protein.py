@@ -151,14 +151,69 @@ def add_box(d_boxMargin, d_boxType='cubic'):
     # To update d_nameList.
     utils.add_to_nameList("{0}_BOX.pdb".format(universe.get('d_pdbName')))
 
-def add_buffer(ph_bufpdbName, ph_bufitpName, ph_bufMargin=2.0, ph_bufnmol=-1, attempts=100000):
+def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0], ph_bufMargin=2.0, attempts=100000):
+    # This function writes a dummy .pdb containing the default buffer (ion).
+    def writeDefaultPDB():
+        with open("defaultBuffer.pdb", 'w') as file:
+            file.write("TITLE     BUFFER PARTICLE\n")
+            file.write("MODEL        1\n")
+            file.write("ATOM      1  NA  BUF     1     110.896   2.872  68.855  1.00  0.00            \n")
+            file.write("TER\n")
+            file.write("ENDMDL\n")
+
+    # This function writes the topology for the default buffer (ion).
+    # Note: charge should not be 0 because then some interactions are not generated???
+    def writeDefaultITP():
+        with open("defaultBuffer.itp", 'w') as file:
+            file.write("[ moleculetype ]\n")
+            file.write("; molname	nrexcl\n")
+            file.write("BUF		1\n\n")
+            file.write("[ atoms ]\n")
+            file.write("; id	at type		res nr	residu name at name  cg nr	charge	 \n")
+            file.write("1		SOD			1		   BUF			NA		   1		0	 \n\n")
+            file.write("#ifdef POSRES_BUF\n")
+            file.write("; Position restraint for each buffer ion\n")
+            file.write("[ position_restraints ]\n")
+            file.write(";  i funct       fcx        fcy        fcz\n")
+            file.write("   1    1       1000       1000       1000\n")
+            file.write("#endif\n")
+
+    # Skip this whole step if we don't need it.
     if not (universe.get('ph_constantpH') and universe.get('ph_restrainpH')):
         utils.update("add_buffer", "either ph_constantpH or ph_restrainpH is False --> skipping...")
         return
 
-    # If user doesn't specified the amount, use #BUF = #ACID.
-    if (ph_bufnmol == -1):
-        ph_bufnmol = countRes('ASP') + countRes('GLU')
+    # Make sure that the sum of the charges in state A and B are correct.
+    if (sum(ph_bufqqA) != 1 or sum(ph_bufqqB) != 0):
+        utils.update("add_buffer", "buffer charges incorrectly specified! sums must be 1 and 0")
+        universe.get('ph_bufqqA')
+        universe.get('ph_bufqqB')
+
+    # Determine whether we use the default or a custom buffer.
+    useDefault = False
+    if (ph_bufpdbName == "" and ph_bufitpName == ""):
+        utils.update("add_buffer", "using default (builtin) buffer...")
+        useDefault = True
+    elif (ph_bufpdbName == "" and ph_bufitpName != ""):
+        utils.update("add_buffer", "ph_bufitpName not specified, resorting to default buffer!")
+        useDefault = True
+    elif (ph_bufpdbName != "" and ph_bufitpName == ""):
+        utils.update("add_buffer", "ph_bufpdbName not specified, resorting to default buffer!")
+        useDefault = True
+
+    if (useDefault):
+        # Check to make sure that the charges for the default buffer are correct.
+        if (ph_bufqqA != [1] or ph_bufqqB != [0]):
+            utils.update("add_buffer", "buffer charges incorrectly specified for default buffer!")
+            universe.get('ph_bufqqA')
+            universe.get('ph_bufqqB')
+
+        # Generate the files for the default buffer and update data members.
+        writeDefaultPDB(); ph_bufpdbName = "defaultBuffer.pdb"
+        writeDefaultITP(); ph_bufitpName = "defaultBuffer.itp"
+
+    # Get the number of buffer molecules we need.
+    ph_bufnmol = countRes('ASP') + countRes('GLU')
 
     utils.update("add_buffer", "will attempt to add {0} buffer molecule(s)...".format(ph_bufnmol))
 
@@ -188,12 +243,19 @@ def add_buffer(ph_bufpdbName, ph_bufitpName, ph_bufMargin=2.0, ph_bufnmol=-1, at
 
     # To add buffer topology to topol.top.
     utils.update("add_buffer", "updating topology...")
-    os.system("cp {} .".format(ph_bufitpName))
+
+    if (useDefault):
+        os.remove("defaultBuffer.pdb")              # Remove dummy .pdb file.
+    else:
+        os.system("cp {} .".format(ph_bufitpName))  # Copy to working dir.
+
     topol.add_mol(os.path.basename(ph_bufitpName), "Include buffer topology", 'BUF', actual)
 
     # Set some parameters in the universe.
     universe.add('ph_bufpdbName', ph_bufpdbName)
     universe.add('ph_bufitpName', ph_bufitpName)
+    universe.add('ph_bufqqA', ph_bufqqA)
+    universe.add('ph_bufqqB', ph_bufqqB)
     universe.add('ph_bufMargin', ph_bufMargin)
     universe.add('ph_bufnmol', actual)
 

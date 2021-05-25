@@ -26,7 +26,7 @@ phbuilder.topol.restrain_dihedrals('GLU', [' HA ', ' CA ', ' CB ', ' HB1'], 1, 6
 phbuilder.topol.restrain_dihedrals('ASP', [' HA ', ' CA ', ' CB ', ' HB1'], 1, 60, 0, 10)
 
 phbuilder.protein.add_box(d_boxMargin=1.5, d_boxType='triclinic')
-phbuilder.protein.add_buffer("../../proteins/buffer.pdb", "../../proteins/buffer.itp", attempts=200000, ph_bufMargin=1.5)
+phbuilder.protein.add_buffer("../../proteins/buffer.pdb", "../../proteins/buffer.itp", ph_bufqqA=[-0.0656, 0.5328, 0.5328], ph_bufqqB=[-0.8476, 0.4238, 0.4238], ph_bufMargin=1.5, attempts=200000)
 phbuilder.protein.add_water()
 phbuilder.protein.add_ions()
 

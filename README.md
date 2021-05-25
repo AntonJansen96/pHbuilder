@@ -23,7 +23,7 @@
 | `protein.process(fname, d_model=1, d_ALI='A', d_chain=[], resetResId=False):` <br /> Processes a .pdb file. This should be the first step in building the simulation. `fname` is the name of the .pdb file, `d_model` is the MODEL number, `d_ALI` is the alternative location indicator, `d_chain` is a list of chains (default = all), and `resetResId` resets the residue numbering. Note that all atoms in the input protein MUST belong to a chain (must have a chain letter), otherwise the building process won't work. |
 | `protein.countres(resName)` <br /> Counts and returns the number of residues of a certain `resName`. |
 | `protein.add_box(d_boxMargin, d_boxType='cubic')` <br /> Add periodic box. This function encapsulates `gmx editconf`. |
-| `protein.add_buffer(ph_bufpdbName, ph_bufitpName, ph_bufMargin=2.0, ph_bufnmol=-1, attempts=100000)` <br /> Add buffer particle(s). This function encapsulates `gmx insert-molecules`. Will be skipped if either `ph_constantpH` or `ph_restrainpH` is False. Requires the structure (.pdb) file of the buffer particle as well as the topology (.itp) file. One can optionally set the minimum distance between the buffer particle(s) (themselves) and the protein, as well as the number of attempts. The number of buffer particles can also be set. By default, `ph_bufnmol` = #titratable groups.|
+| `add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0], ph_bufMargin=2.0, attempts=100000)` <br /> Add buffer particle(s). This function encapsulates `gmx insert-molecules`. Will be skipped if either `ph_constantpH` or `ph_restrainpH` is False. If no custom structure (.pdb) + topology (.itp) are given, the default (built-in) buffer (ion) will be used. If you want to use a custom buffer, you need to also specify the charges `ph_bufqqA` and `ph_bufqqB`. One can optionally set the minimum distance between the buffer particle(s) (themselves) and the protein, as well as the number of insertion attempts for `gmx insert-molecules`. |
 | `protein.add_water()` <br /> Solvate the system. This function encapsulates `gmx solvate`. |
 | `add_ions(neutral=True, conc=0, pname='NA', nname='CL')` <br /> Neutralize the system and/or add a specified salt concentration (`conc` in mmol/ml) using `pname` and `nname` ion types (default NA and CL). This function encapsulates `gmx genion`. |
 | `topol.generate(d_modelFF, d_modelWater, d_terministring="", d_customitp="")` <br /> Generate the protein topology. This function encapsulates `gmx pdb2gmx`, and makes sure all protonatable residues are put in their protonated state when `ph_constantpH` is True. `d_modelFF` is the force field, while `d_modelWater` is the water model. `d_terministring` is a string consisting of two letters, specifying how `pdb2gmx` should treat the termini of the (various chains of) the protein. Commonly used: 00 = charged termini (`pdb2gmx` default), 11 = neutral termini, 34 = use this with capped tripeptide. `d_customitp` allows you to specify a custom .itp file to overwrite topol_Protein_chain_A.itp. This is a temporary fix for using our modified force field.|
@@ -143,6 +143,14 @@
   <tr>
     <td class="tg-0pky">ph_bufnmol</td>
     <td class="tg-0pky">Number of buffer molecules.</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">ph_bufqqA</td>
+    <td class="tg-0pky">Charge on atom(s) in buffer molecule in state A (lambda = 0).</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">ph_bufqqB</td>
+    <td class="tg-0pky">Charge on atom(s) in buffer molecule in state B (lambda = 1).</td>
   </tr>
   <tr>
     <td class="tg-0pky">ph_pdbname</td>

@@ -19,6 +19,7 @@
 | `universe.add(varName, value)` <br /> Add variable to universe. |
 | `universe.has(varName)` <br /> Check whether variable with varName is in universe. |
 | `universe.get(varName)` <br /> Retrieve variable with varName from universe. |
+| `universe.defineLambdaType(resname, pKa, atoms, qqA, qqB, dvdl)` <br /> Define a residue-type that you want to use for lambda-dynamics. Common are GLU and ASP. At least one lambda residue-type should be defined for constant-pH to work. `resname` is the name of the residue, `pKa` is the macroscopic pKa, `atoms` is a list of atoms to be used in the lambda-group, `qqA` and `qqB` are lists of charges on said atoms in states A and B, and `dvdl` is a list containing the dV/dl coefficients (these are specific for each residue/buffer, and depend on the force field used).|
 | `universe.inspect()` <br /> Print all the data members stored in universe. This is very useful for debugging or checking the parameters used for building the simulation in question. |
 | `protein.process(fname, d_model=1, d_ALI='A', d_chain=[], resetResId=False):` <br /> Processes a .pdb file. This should be the first step in building the simulation. `fname` is the name of the .pdb file, `d_model` is the MODEL number, `d_ALI` is the alternative location indicator, `d_chain` is a list of chains (default = all), and `resetResId` resets the residue numbering. Note that all atoms in the input protein MUST belong to a chain (must have a chain letter), otherwise the building process won't work. |
 | `protein.countres(resName)` <br /> Counts and returns the number of residues of a certain `resName`. |
@@ -117,16 +118,8 @@
     <td class="tg-0pky">TITLE of .pdb file. If none was set, d_pdbName will be used.</td>
   </tr>
   <tr>
-    <td class="tg-0pky">ph_ASP_dvdl</td>
-    <td class="tg-0pky">Contains dV/dl calibration coefficients for ASP. Has to be added manually to universe before you start to build the system.</td>
-  </tr>
-  <tr>
     <td class="tg-0pky">ph_BUF_dvdl</td>
     <td class="tg-0pky">Containd dV/dl calibration coefficients for BUF. Has to be added manually to universe before you start to build the system.</td>
-  </tr>
-  <tr>
-    <td class="tg-0pky">ph_GLU_dvdl</td>
-    <td class="tg-0pky">Containd dV/dl calibration coefficients for GLU. Has to be added manually to universe before you start to build the system.</td>
   </tr>
   <tr>
     <td class="tg-0pky">ph_barrier_E</td>
@@ -175,6 +168,10 @@
   <tr>
     <td class="tg-0pky">ph_lambdaM</td>
     <td class="tg-0pky">Mass (Da) of lambda particle. Good value is 5.0 Da.</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">ph_lambdaTypes</td>
+    <td class="tg-0pky">List containing the LambdaType objects that were specified by the user using the universe.defineLambdaType() function. This list should contain at least one lambdaType for constant-pH to work. </td>
   </tr>
   <tr>
     <td class="tg-0pky">ph_nstout</td>

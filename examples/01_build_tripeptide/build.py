@@ -6,8 +6,24 @@ import phbuilder
 phbuilder.universe.add('ph_constantpH', True)
 phbuilder.universe.add('ph_QQleveling', 0)
 
-phbuilder.universe.add('ph_GLU_dvdl', [26.238, -556.92, -106.76, 230.33, -155.89, -24.960])
-phbuilder.universe.add('ph_ASP_dvdl', [44.936, -551.57, -109.62, 203.77, -127.44, -31.648])
+phbuilder.universe.defineLambdaType(
+    resname = 'ASP', 
+    pKa     = 3.65,
+    atoms   = [' CB ', ' CG ', ' OD1', ' OD2', ' HD2'],
+    qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
+    qqB     = [-0.28, 0.62, -0.76, -0.76, 0.00],
+    dvdl    = [49.066, -563.785, -290.092, 1313.046, -2439.157, 2010.080, -647.785]
+    )
+
+phbuilder.universe.defineLambdaType(
+    resname = 'GLU', 
+    pKa     = 4.25,
+    atoms   = [' CG ', ' CD ', ' OE1', ' OE2', ' HE2'],
+    qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
+    qqB     = [-0.28, 0.62, -0.76, -0.76, 0.00],
+    dvdl    = [26.339, -535.805, -78.575, -472.196, 1744.287, -1927.134, 655.915]
+    )
+
 phbuilder.universe.add('ph_BUF_dvdl', [672.41, -702.45, -63.10, 695.67, -1214.43, 537.14])
 
 ################################################################################

@@ -35,3 +35,23 @@ def inspect():
                 print("{0:{arg}s} = [{1}, ..., {2}] ({3}) {4}".format(item, shelf[item][0], shelf[item][-1], len(shelf[item]), type([]), arg=longest).replace('\n', ''))
             else:
                 print("{0:{arg}s} = {1} {2}".format(item, shelf[item], type(shelf[item]), arg=longest))
+
+# Stores the information of a lambda residue-type.
+class LambdaType:
+    def __init__(self, resname, pKa, atoms, qqA, qqB, dvdl):
+        self.d_resname = resname
+        self.d_pKa     = pKa
+        self.d_atoms   = atoms
+        self.d_qqA     = qqA
+        self.d_qqB     = qqB
+        self.d_dvdl    = dvdl
+
+# Add a lambda residue-type to universe.
+def defineLambdaType(resname, pKa, atoms, qqA, qqB, dvdl):
+    NewLambdaType = LambdaType(resname, pKa, atoms, qqA, qqB, dvdl)
+    if has('ph_lambdaTypes'):
+        temp = get('ph_lambdaTypes')
+        temp.append(NewLambdaType)
+        add('ph_lambdaTypes', temp)
+    else:
+        add('ph_lambdaTypes', [NewLambdaType])

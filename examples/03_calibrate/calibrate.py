@@ -7,10 +7,25 @@ import os, numpy, load
 phbuilder.universe.add('ph_constantpH', True)
 phbuilder.universe.add('ph_QQleveling', 0)
 
-# Note: the coefficients we put here do not affect the calibration.
-phbuilder.universe.add('ph_GLU_dvdl', [26.238, -556.92, -106.76, 230.33, -155.89, -24.960])
-phbuilder.universe.add('ph_ASP_dvdl', [44.936, -551.57, -109.62, 203.77, -127.44, -31.648])
-phbuilder.universe.add('ph_BUF_dvdl', [672.41, -702.45, -63.10, 695.67, -1214.43, 537.14])
+phbuilder.universe.defineLambdaType(
+    resname = 'ASP', 
+    pKa     = 3.65,
+    atoms   = [' CB ', ' CG ', ' OD1', ' OD2', ' HD2'],
+    qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
+    qqB     = [-0.28, 0.62, -0.76, -0.76, 0.00],
+    dvdl    = [1, 2, 3]
+    )
+
+phbuilder.universe.defineLambdaType(
+    resname = 'GLU', 
+    pKa     = 4.25,
+    atoms   = [' CG ', ' CD ', ' OE1', ' OE2', ' HE2'],
+    qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
+    qqB     = [-0.28, 0.62, -0.76, -0.76, 0.00],
+    dvdl    = [1, 2, 3]
+    )
+
+phbuilder.universe.add('ph_BUF_dvdl', [1, 2, 3])
 
 ################################################################################
 

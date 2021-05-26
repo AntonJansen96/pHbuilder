@@ -213,7 +213,9 @@ def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0],
         writeDefaultITP(); ph_bufitpName = "defaultBuffer.itp"
 
     # Get the number of buffer molecules we need.
-    ph_bufnmol = countRes('ASP') + countRes('GLU')
+    ph_bufnmol = 0
+    for lambdaType in universe.get('ph_lambdaTypes'):
+        ph_bufnmol += countRes(lambdaType.d_resname)
 
     utils.update("add_buffer", "will attempt to add {0} buffer molecule(s)...".format(ph_bufnmol))
 

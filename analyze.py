@@ -21,7 +21,7 @@ def plotlambda(plotBUF=False):
     resnameList = []    # Get the names and such of all the ASPs and GLUs.
     residList   = []
     for residue in universe.get('d_residues'):
-        if residue.d_resname in ["ASP", "GLU"]:
+        if residue.d_resname in ["ASP", "ASPH", "ASPT", "GLU", "GLUH", "GLUT"]:
             resnameList.append(residue.d_resname)
             residList.append(residue.d_resid)
 

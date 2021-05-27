@@ -24,7 +24,7 @@ def add_mol(itpfname, comment, molname=None, molcount=None):
         if molname != None and molcount != None and molname not in topList[-1]:
             file.write("{0}\t\t\t{1}\n".format(molname, molcount))
 
-def generate(d_modelFF, d_modelWater, d_terministring="", d_customitp=""):
+def generate(d_modelFF, d_modelWater, d_terministring=""):
     # Internal helper function.
     def rebuild_topol():
         # If we have only one chain, gromacs will put everything in topol.top.
@@ -68,8 +68,44 @@ def generate(d_modelFF, d_modelWater, d_terministring="", d_customitp=""):
     universe.add('d_modelWater', d_modelWater)
     universe.add('d_terministring', d_terministring)
 
+    # PRE-TREAT THE .PDB FILE ##################################################
+    lambdaTypeNames = []
+    for lambdaType in universe.get('ph_lambdaTypes'):
+        lambdaTypeNames.append(lambdaType.d_resname)
+
+    lambdaTypeBaseNames = []
+    for lambdaTypeName in lambdaTypeNames:
+        lambdaTypeBaseNames.append(lambdaTypeName[0:3])
+
+    # print("lambdaTypeNames", lambdaTypeNames)         # debug
+    # print("LambdaTypeBaseNames", lambdaTypeBaseNames) # debug
+
+    if (universe.get("ph_constantpH")):
+        # If we use our default force field:
+        if (d_modelFF == "charmm36-mar2019"):
+            utils.update("generate", "using our default ({}) force field...".format(d_modelFF))
+        # If we use our custom / modified force field:
+        elif (d_modelFF == "charmm36-mar2019-m4"):
+            utils.update("generate", "using our custom/modified ({}) force field...".format(d_modelFF))
+        # Warn user if we use something different than charmm36-mar2019
+        else:
+            utils.warning("generate", "using an unknown ({}) force field!".format(d_modelFF))
+            utils.warning("generate", "pHbuilder was made for charmm36-mar2019(-m4). All bets are off...".format(d_modelFF))
+
+        residues = universe.get('d_residues')
+
+        for residue in residues:
+            if (residue.d_resname)[0:3] in lambdaTypeBaseNames:
+                residue.d_resname = lambdaTypeNames[lambdaTypeBaseNames.index(residue.d_resname[0:3])]
+
+        # Update d_residues and overwrite curren _PR1.pdb
+        universe.add('d_residues', residues)
+        protein.write("{}_PR1.pdb".format(universe.get('d_pdbName')))
+
     # USER UPDATE STUFF ########################################################
-    countACID = protein.countRes("ASP") + protein.countRes("GLU")
+    countACID = 0
+    for resname in lambdaTypeNames:
+        countACID += protein.countRes(resname)
 
     # If constant-pH is on,
     if universe.get('ph_constantpH'):
@@ -80,19 +116,19 @@ def generate(d_modelFF, d_modelWater, d_terministring="", d_customitp=""):
             utils.update("generate", "detected {} acidic residue(s):".format(countACID))
 
             for letter in universe.get('d_chain'):
-                count = 1
+                count = 0
 
                 for residue in universe.get('d_residues'):
                     if residue.d_chain == letter:
                         count += 1
 
-                        if residue.d_resname in ['ASP', 'GLU']:
+                        if residue.d_resname in lambdaTypeNames:
                             utils.update("generate", "{:3s}-{:<4d} in chain {}".format(residue.d_resname, count, letter))
 
-            utils.update("generate", "(setting protonation state to true (option 1) for all of these)")
+            utils.update("generate", "(setting protonation state to True (option 1) for all of these)")
 
         else:
-            utils.update("generate", "no acidic residues detected, constant-pH is turned off...")
+            utils.warning("generate", "No acidic residues detected. Did you update the lambdaTypeName(s)? Turning off constant-pH...")
             universe.add('ph_constantpH', False)
             universe.add('ph_QQleveling', 0)
 
@@ -102,49 +138,53 @@ def generate(d_modelFF, d_modelWater, d_terministring="", d_customitp=""):
 
     utils.update("generate", "using the {} force field with the {} water model...".format(d_modelFF, d_modelWater))
 
-    # CREATE EOFSTRING FOR PDB2GMX COMMAND #####################################
-
-    # Here we create EOFstring to circumvent pd2gmx prompting for user input.
-    xstr = "<< EOF"
-    # The for-loop sets the protonation state of all GLUs and ASPs to 1
-    # (True) if ph_constantpH is True, and to 0 (False) if ph_constantpH is False.
-    for chain in universe.get('d_chain'):
-        for residue in universe.get('d_residues'):
-            if residue.d_resname in ['ASP', 'GLU'] and residue.d_chain == chain:
-                xstr += "\n{:d}".format(universe.get('ph_constantpH'))
-        
-        # Furthermore, if the user specified a two-letter string for the termini,
-        # add those to the EOFstring as well:
-        if (d_terministring != ""):
-            xstr += "\n{}".format(d_terministring[0])
-            xstr += "\n{}".format(d_terministring[1])
-    # End EOFstring:
-    xstr += "\nEOF"
-    # print(xstr) # Debug
-
-    # UPDATE USER ABOUT WHAT WE DO WITH THE TERMINI ############################
-
     if (d_terministring != ""):
         utils.update("generate", "Using options {} for termini...".format(d_terministring))
     else:
-        utils.update("generate", "No termini specified, using gmx default (00 = NH3+ and COO-)...")
+        utils.warning("generate", "No termini specified, using gmx default (00 = NH3+ and COO-)...")
     
     utils.update("generate", "running pdb2gmx to create {}_PR2.pdb and topol.top...".format(universe.get('d_pdbName')))
 
     # RUN ACTUAL PDB2GMX COMMAND ###############################################
 
+    # If constant-pH is turned on AND we have a lambdaType ASPH or GLUH,
+    # this means we need to use pdb2gmx interactive to set the protonation
+    # states:
+    options = ""
+    if (universe.get('ph_constantpH')):
+        if ("ASPH" in lambdaTypeNames):
+            options += "-asp "
+        if ("GLUH" in lambdaTypeNames):
+            options += "-glu "
+
+    # If the user specified a terministring, add -ter to pdb2gmx.
     if (d_terministring != ""):
-        os.system("gmx pdb2gmx -f {0} -o {1}_PR2.pdb -asp -glu -ignh -ff {2} -water {3} -ter >> builder.log 2>&1 {4}".format(universe.get('d_nameList')[-1], universe.get('d_pdbName'), d_modelFF, d_modelWater, xstr))
-    else:
-        os.system("gmx pdb2gmx -f {0} -o {1}_PR2.pdb -asp -glu -ignh -ff {2} -water {3} >> builder.log 2>&1 {4}".format(universe.get('d_nameList')[-1], universe.get('d_pdbName'), d_modelFF, d_modelWater, xstr))
+        options += "-ter"
+
+    xstr = "<< EOF"
+    for chain in universe.get('d_chain'):
+        # If constant-pH is turned on AND we have a lambdaType ASPH or GLUH, set
+        # protonation state of these to True.
+        if (universe.get('ph_constantpH')):
+            for residue in universe.get('d_residues'):
+                if residue.d_resname in ["ASPH", "GLUH"] and residue.d_chain == chain:
+                    xstr += "\n1"
+
+        # If the user specified a terministring, add those to the EOFstring as well:
+        if (d_terministring != ""):
+            xstr += "\n{}".format(d_terministring[0])
+            xstr += "\n{}".format(d_terministring[1])
+    
+    xstr += "\nEOF" # End EOFstring.
+    # print(options) # debug
+    # print(xstr)    # debug
+
+    os.system("gmx pdb2gmx -f {0} -o {1}_PR2.pdb -ff {2} -water {3} -ignh {4} >> builder.log 2>&1 {5}".format(universe.get('d_nameList')[-1], universe.get('d_pdbName'), d_modelFF, d_modelWater, options, xstr))
+
+    # WRAPUP ###################################################################
 
     # Rebuild topology.
     rebuild_topol()
-
-    # Use custom topol_Protein_chain_A.itp (this is a temporary fix for charmm36-mar2019-m4)
-    if (d_customitp != ""):
-        utils.update("generate", "Overwriting topol_Protein_chain_A.itp generated by pdb2gmx with {}...".format(d_customitp))
-        os.system("cp {} .".format(d_customitp))
 
     # To update d_residues.
     protein.load("{0}_PR2.pdb".format(universe.get('d_pdbName')))

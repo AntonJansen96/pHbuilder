@@ -48,6 +48,9 @@ class LambdaType:
 
 # Add a lambda residue-type to universe.
 def defineLambdaType(resname, pKa, atoms, qqA, qqB, dvdl):
+    if (len(resname) != 4):
+        resname = input("Name of lambdaType \"{}\" must be four letters (e.g. ASPH, GLUT): ".format(resname))
+
     NewLambdaType = LambdaType(resname, pKa, atoms, qqA, qqB, dvdl)
     if has('ph_lambdaTypes'):
         temp = get('ph_lambdaTypes')

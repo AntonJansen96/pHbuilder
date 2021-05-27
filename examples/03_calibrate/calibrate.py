@@ -8,7 +8,7 @@ phbuilder.universe.add('ph_constantpH', True)
 phbuilder.universe.add('ph_QQleveling', 0)
 
 phbuilder.universe.defineLambdaType(
-    resname = 'ASP', 
+    resname = 'ASPH', 
     pKa     = 3.65,
     atoms   = [' CB ', ' CG ', ' OD1', ' OD2', ' HD2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
@@ -17,7 +17,7 @@ phbuilder.universe.defineLambdaType(
     )
 
 phbuilder.universe.defineLambdaType(
-    resname = 'GLU', 
+    resname = 'GLUH', 
     pKa     = 4.25,
     atoms   = [' CG ', ' CD ', ' OE1', ' OE2', ' HE2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],

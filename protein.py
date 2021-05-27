@@ -94,13 +94,13 @@ def load(fname, d_model=1, d_ALI='A', d_chain=[]):
                 (
                     atoms, 
                     ali,
-                    atomLines[idx][17:20], 
-                    atomLines[idx][21:22], 
+                    atomLines[idx][17:21].strip(),
+                    atomLines[idx][21:22],
                     int(atomLines[idx][22:26]), 
                     xCoord, 
                     yCoord,
                     zCoord
-                ))
+                ))            
             # Reset.
             atoms = []; ali = []; xCoord = []; yCoord = []; zCoord = []
 
@@ -120,7 +120,7 @@ def write(name):
         atomNumber = 1
         for residue in universe.get('d_residues'):
             for idx in range(0, len(residue.d_atoms)):
-                file.write("{:6s}{:5d} {:^4s}{:1s}{:3s} {:1s}{:4d}{:1s}   {:8.3f}{:8.3f}{:8.3f}\n".format('ATOM', atomNumber, residue.d_atoms[idx], residue.d_ali[idx], residue.d_resname, residue.d_chain, residue.d_resid, '', residue.d_x[idx], residue.d_y[idx], residue.d_z[idx]))
+                file.write("{:6s}{:5d} {:^4s}{:1s}{:4s}{:1s}{:4d}{:1s}   {:8.3f}{:8.3f}{:8.3f}\n".format('ATOM', atomNumber, residue.d_atoms[idx], residue.d_ali[idx], residue.d_resname, residue.d_chain, residue.d_resid, '', residue.d_x[idx], residue.d_y[idx], residue.d_z[idx]))
                 atomNumber += 1
 
         file.write("TER\nENDMDL\n")
@@ -185,7 +185,7 @@ def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0],
 
     # Make sure that the sum of the charges in state A and B are correct.
     if (sum(ph_bufqqA) != 1 or sum(ph_bufqqB) != 0):
-        utils.update("add_buffer", "buffer charges incorrectly specified! sums must be 1 and 0")
+        utils.warning("add_buffer", "buffer charges incorrectly specified! sums must be 1 and 0")
         universe.get('ph_bufqqA')
         universe.get('ph_bufqqB')
 
@@ -195,16 +195,16 @@ def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0],
         utils.update("add_buffer", "using default (builtin) buffer...")
         useDefault = True
     elif (ph_bufpdbName == "" and ph_bufitpName != ""):
-        utils.update("add_buffer", "ph_bufitpName not specified, resorting to default buffer!")
+        utils.warning("add_buffer", "ph_bufitpName not specified, resorting to default buffer!")
         useDefault = True
     elif (ph_bufpdbName != "" and ph_bufitpName == ""):
-        utils.update("add_buffer", "ph_bufpdbName not specified, resorting to default buffer!")
+        utils.warning("add_buffer", "ph_bufpdbName not specified, resorting to default buffer!")
         useDefault = True
 
     if (useDefault):
         # Check to make sure that the charges for the default buffer are correct.
         if (ph_bufqqA != [1] or ph_bufqqB != [0]):
-            utils.update("add_buffer", "buffer charges incorrectly specified for default buffer!")
+            utils.warning("add_buffer", "buffer charges incorrectly specified for default buffer!")
             universe.get('ph_bufqqA')
             universe.get('ph_bufqqB')
 
@@ -238,8 +238,8 @@ def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0],
     # Give user a warning if there wasn't enough space.
     actual = countRes('BUF')
     if actual < ph_bufnmol:
-        utils.update("add_buffer", "warning: only {0}/{1} requested buffer molecules inserted after {2} attempts,".format(actual, ph_bufnmol, attempts))
-        utils.update("add_buffer", "warning: try decreasing ph_bufMargin (={0}nm) or increasing d_boxMargin (={1}nm)...".format(ph_bufMargin, universe.get('d_boxMargin')))
+        utils.warning("add_buffer", "only {0}/{1} requested buffer molecules inserted after {2} attempts,".format(actual, ph_bufnmol, attempts))
+        utils.warning("add_buffer", "try decreasing ph_bufMargin (={0}nm) or increasing d_boxMargin (={1}nm)...".format(ph_bufMargin, universe.get('d_boxMargin')))
     else:
         utils.update("add_buffer", "succesfully added {0} buffer molecule(s)...".format(actual))
 

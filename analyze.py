@@ -40,7 +40,7 @@ def plotlambda(plotBUF=False):
 
     plt.xlabel("Time (ps)")
     plt.ylabel(r"$\lambda$-coordinate")
-
+    plt.ylim(-0.1, 1.1)
     plt.ticklabel_format(axis='x', style='sci', scilimits=(0, 3))
 
     plt.legend()

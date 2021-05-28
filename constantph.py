@@ -101,14 +101,14 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
         if (obj.d_resname in lambdaResidueTypeList):
             # If we use "charge-coupling" (1) scheme, extend the charge states:
             if (universe.get('ph_QQleveling') == 1):
-                writeBlock(idx, obj.d_resname, obj.d_dvdl, obj.d_pKa, ph_barrierE, obj.d_qqA + BUF_qqB, obj.d_qqB + BUF_qqA)
+                writeBlock(idx, obj.d_resname, obj.d_dvdl[::-1], obj.d_pKa, ph_barrierE, obj.d_qqA + BUF_qqB, obj.d_qqB + BUF_qqA)
             else:
-                writeBlock(idx, obj.d_resname, obj.d_dvdl, obj.d_pKa, ph_barrierE, obj.d_qqA, obj.d_qqB)
+                writeBlock(idx, obj.d_resname, obj.d_dvdl[::-1], obj.d_pKa, ph_barrierE, obj.d_qqA, obj.d_qqB)
             idx += 1
 
     if (universe.get('ph_QQleveling') == 2):
         # f we use "charge-constraining" (2) scheme, we additionaly need ph_BUF_dvdl.
-        writeBlock(idx, 'BUF', universe.get('ph_BUF_dvdl'), 0, 0, BUF_qqA, BUF_qqB)
+        writeBlock(idx, 'BUF', universe.get('ph_BUF_dvdl')[::-1], 0, 0, BUF_qqA, BUF_qqB)
 
     # PART 3 - WRITE INDIVIDUAL RESIDUE/LAMBDA-GROUP STUF ######################
     def writeResBlock(number, name, indexLambda, indexName):

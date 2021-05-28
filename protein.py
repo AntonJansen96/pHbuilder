@@ -163,6 +163,7 @@ def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0],
 
     # This function writes the topology for the default buffer (ion).
     # Note: charge should not be 0 because then some interactions are not generated???
+    # Update: this was fixed by Berk in e2c2340.
     def writeDefaultITP():
         with open("defaultBuffer.itp", 'w') as file:
             file.write("[ moleculetype ]\n")

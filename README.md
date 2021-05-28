@@ -1,4 +1,4 @@
-<b>Current gromacs-constantph commit that should be used with pHbuilder = `1272528`</b>
+<b>Current gromacs-constantph commit that should be used with pHbuilder = `a9d7c20` </b>
 
 <b>Description</b>
 <p>Python-based system builder for constant-pH simulations in Gromacs.</p>

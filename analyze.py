@@ -505,7 +505,7 @@ def fitCalibration(order=5, compare=[]):
 
 def lambdaFile(fname1, fname2=""):
     
-    fig=plt.figure(figsize=(24, 12))
+    fig=plt.figure(figsize=(24, 10))
 
     time1        = load.Col(fname1, 1)
     lambda_x1    = load.Col(fname1, 2)
@@ -560,18 +560,18 @@ def lambdaFile(fname1, fname2=""):
     fig.add_subplot(2, 4, 4)
     plt.scatter(lambda_x1, lambda_dvdl1, s=10)
     if (fname2 != ""): plt.scatter(lambda_x2, lambda_dvdl2, s=10)
-    plt.title(r"Force (dV/dl) on $\lambda$-coordinate")
+    plt.title(r"Force (dV/dl) on $\lambda$-particle")
     plt.xlabel(r"$\lambda$-coordinate")
-    plt.ylabel("dV/dl")
+    plt.ylabel("dV/dl (kJ/mol/nm)")
     plt.xlim(-0.1, 1.1)
     plt.grid()    
 
     fig.add_subplot(2, 4, 5)
     plt.scatter(lambda_x1, F_coulomb1, s=10)
     if (fname2 != ""): plt.scatter(lambda_x2, F_coulomb2, s=10)
-    plt.title("Coulomb-force on $\lambda$-coordinate")
+    plt.title("Coulomb-force on $\lambda$-particle")
     plt.xlabel(r"$\lambda$-coordinate")
-    plt.ylabel("F_Coulomb")
+    plt.ylabel("F_Coulomb (kJ/mol/nm)")
     plt.xlim(-0.1, 1.1)
     plt.ticklabel_format(axis='x', style='sci', scilimits=(0, 3))
     plt.grid()
@@ -581,7 +581,7 @@ def lambdaFile(fname1, fname2=""):
     if (fname2 != ""): plt.scatter(lambda_x2, F_corr2, s=10)
     plt.title("Reference-force on $\lambda$-particle")
     plt.xlabel(r"$\lambda$-coordinate")
-    plt.ylabel("F_corr")
+    plt.ylabel("F_corr (kJ/mol/nm)")
     plt.xlim(-0.1, 1.1)
     # plt.ticklabel_format(axis='x', style='sci', scilimits=(0, 3))
     plt.grid()
@@ -591,7 +591,7 @@ def lambdaFile(fname1, fname2=""):
     if (fname2 != ""): plt.scatter(lambda_x2, F_bias2, s=10)
     plt.title("Bias-force on $\lambda$-particle")
     plt.xlabel(r"$\lambda$-coordinate")
-    plt.ylabel("F_bias")
+    plt.ylabel("F_bias (kJ/mol/nm)")
     plt.axis([-0.1, 1.1, -200, 200])
     plt.ticklabel_format(axis='x', style='sci', scilimits=(0, 3))
     plt.grid()
@@ -601,12 +601,14 @@ def lambdaFile(fname1, fname2=""):
     if (fname2 != ""): plt.scatter(lambda_x2, F_ph2, s=10)
     plt.title("pH-force on $\lambda$-particle")
     plt.xlabel(r"$\lambda$-coordinate")
-    plt.ylabel("F_pH")
+    plt.ylabel("F_pH (kJ/mol/nm)")
     plt.xlim(-0.1, 1.1)
     plt.ticklabel_format(axis='x', style='sci', scilimits=(0, 3))
     plt.grid()
 
-    plt.legend([fname1, fname2])
+    # plt.tight_layout()
+    fig.legend([fname1, fname2], loc="upper center")
+    
     plt.show()
     
 # Assign subplot to a variable:

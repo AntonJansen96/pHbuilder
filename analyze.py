@@ -533,7 +533,7 @@ def compareLambdaFiles(namelist):
         F_bias      = load.Col(name, 8)
         F_ph        = load.Col(name, 9)
 
-        plt1.plot(time, lambda_x, linewidth=0.5)
+        plt1.plot(time, lambda_x, linewidth=0.5, label="deprotonation = {:.2f}".format(titrate(name)))
         plt2.plot(time, lambda_temp, linewidth=0.5, label="mean = {:.1f} (K)".format(sum(lambda_temp)/len(lambda_temp)))
         plt3.hist(lambda_vel, density=True)
         plt4.scatter(lambda_x, lambda_dvdl, s=5)
@@ -547,6 +547,7 @@ def compareLambdaFiles(namelist):
     plt1.set_ylabel("$\lambda$-coordinate")
     plt1.set_ylim(-0.1, 1.1)
     plt1.ticklabel_format(axis='x', style='sci', scilimits=(0, 3))
+    plt1.legend()
 
     plt2.set_title("$\lambda$-temperature vs time")
     plt2.set_xlabel("Time (ps)")

@@ -1,6 +1,6 @@
 import universe, utils
 
-def gen_mdp(Type, nsteps=25000, nstxout=0, posres=False):
+def gen_mdp(Type, nsteps=25000, nstxout=0, posres=False, sameSeed=False):
     # HEAD
     if (Type not in ['EM', 'NVT', 'NPT', 'MD']):
         raise Exception("Unknown .mdp Type specified. Types are: EM, NVT, NPT, MD.")
@@ -123,6 +123,11 @@ def gen_mdp(Type, nsteps=25000, nstxout=0, posres=False):
     if (Type == 'NVT'):
         addTitle('Generate velocities for startup')
         addParam('gen_vel', 'yes')
+
+    if (sameSeed):
+        addTitle('Random seeds')
+        addParam('gen-seed', 1, 'Seed for generating velocities.')
+        addParam('ld-seed', 1, 'Seed for the (lambda) thermostat.')
 
     file.close()
 

@@ -8,7 +8,7 @@ phbuilder.universe.add('ph_constantpH', True)
 phbuilder.universe.add('ph_QQleveling', 0)
 
 phbuilder.universe.defineLambdaType(
-    resname = 'ASPH', 
+    resname = 'ASPT', 
     pKa     = 3.65,
     atoms   = [' CB ', ' CG ', ' OD1', ' OD2', ' HD2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
@@ -17,7 +17,7 @@ phbuilder.universe.defineLambdaType(
     )
 
 phbuilder.universe.defineLambdaType(
-    resname = 'GLUH', 
+    resname = 'GLUT', 
     pKa     = 4.25,
     atoms   = [' CG ', ' CD ', ' OE1', ' OE2', ' HE2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
@@ -32,7 +32,7 @@ phbuilder.universe.add('ph_BUF_dvdl', [1, 2, 3])
 phbuilder.protein.process('../../proteins/GLU_tri.pdb')
 
 phbuilder.write.reset()
-phbuilder.topol.generate("charmm36-mar2019", "tip3p", d_terministring="34")
+phbuilder.topol.generate("charmm36-mar2019-m4", "tip3p", d_terministring="34")
 
 phbuilder.protein.add_box(d_boxMargin=2.0)
 phbuilder.protein.add_buffer("../../proteins/buffer.pdb", "../../proteins/buffer.itp", ph_bufqqA=[-0.0656, 0.5328, 0.5328], ph_bufqqB=[-0.8476, 0.4238, 0.4238])

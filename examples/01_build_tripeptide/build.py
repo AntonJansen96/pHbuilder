@@ -7,21 +7,21 @@ phbuilder.universe.add('ph_constantpH', True)
 phbuilder.universe.add('ph_QQleveling', 0)
 
 phbuilder.universe.defineLambdaType(
-    resname = 'ASPH', 
+    resname = 'ASPT', 
     pKa     = 3.65,
     atoms   = [' CB ', ' CG ', ' OD1', ' OD2', ' HD2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
     qqB     = [-0.28, 0.62, -0.76, -0.76, 0.00],
-    dvdl    = [49.066, -563.785, -290.092, 1313.046, -2439.157, 2010.080, -647.785]
+    dvdl    = [44.621, -554.27, -146.03, 278.55, -144.28, -54.078]
     )
 
 phbuilder.universe.defineLambdaType(
-    resname = 'GLUH', 
+    resname = 'GLUT', 
     pKa     = 4.25,
     atoms   = [' CG ', ' CD ', ' OE1', ' OE2', ' HE2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
     qqB     = [-0.28, 0.62, -0.76, -0.76, 0.00],
-    dvdl    = [26.339, -535.805, -78.575, -472.196, 1744.287, -1927.134, 655.915]
+    dvdl    = [27.157, -558.21, -204.91, 514.37, -429.77, 59.636]
     )
 
 ################################################################################
@@ -29,7 +29,7 @@ phbuilder.universe.defineLambdaType(
 phbuilder.protein.process('../../proteins/ASP_tri.pdb')
 
 phbuilder.write.reset()
-phbuilder.topol.generate("charmm36-mar2019", "tip3p", d_terministring="34")
+phbuilder.topol.generate("charmm36-mar2019-m4", "tip3p", d_terministring="34")
 
 phbuilder.protein.add_box(d_boxMargin=2.0)
 phbuilder.protein.add_buffer("../../proteins/buffer.pdb", "../../proteins/buffer.itp", ph_bufqqA=[-0.0656, 0.5328, 0.5328], ph_bufqqB=[-0.8476, 0.4238, 0.4238])

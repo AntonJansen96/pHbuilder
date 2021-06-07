@@ -32,7 +32,7 @@ phbuilder.universe.add('ph_BUF_dvdl', [1, 2, 3]) # Not relevant for calibration.
 phbuilder.protein.process('../../proteins/GLU_tri.pdb')
 
 phbuilder.write.reset()
-phbuilder.topol.generate("charmm36-mar2019-m4", "tip3p", d_terministring="34")
+phbuilder.topol.generate("../../ffields/charmm36-mar2019-m4.ff", "tip3p", d_terministring="34")
 
 phbuilder.protein.add_box(d_boxMargin=2.0)
 phbuilder.protein.add_buffer()

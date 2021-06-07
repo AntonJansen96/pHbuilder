@@ -63,24 +63,39 @@ def generate(d_modelFF, d_modelWater, d_terministring=""):
             for letter in universe.get('d_chain'):
                 file.write("Protein_chain_{0}\t\t1\n".format(letter))
 
+    # COPY THE FORCE FIELD #####################################################
+    d_modelFF  = os.path.abspath(d_modelFF)
+    tail, head = os.path.split(d_modelFF)
+
+    os.system("cp -r {} {}/residuetypes.dat .".format(d_modelFF, tail))
+
+    utils.update('generate', 'full-path    = {}'.format(d_modelFF))
+    utils.update('generate', 'tail-path    = {}'.format(tail))
+    utils.update('generate', 'residuetypes = {}/residuetypes.dat'.format(tail))
+    utils.update('generate', 'head-path    = {}'.format(head))
+
+    d_modelFF = head[0:len(head)-3]
+    utils.update('generate', 'ffield name  = {}'.format(d_modelFF))
+
     # ADD RELEVANT PARAMETERS TO UNIVERSE ######################################
     universe.add('d_modelFF', d_modelFF)
     universe.add('d_modelWater', d_modelWater)
     universe.add('d_terministring', d_terministring)
 
-    # PRE-TREAT THE .PDB FILE ##################################################
-    lambdaTypeNames = []
-    for lambdaType in universe.get('ph_lambdaTypes'):
-        lambdaTypeNames.append(lambdaType.d_resname)
+    if universe.get('ph_constantpH'):
 
-    lambdaTypeBaseNames = []
-    for lambdaTypeName in lambdaTypeNames:
-        lambdaTypeBaseNames.append(lambdaTypeName[0:3])
+        # PRE-TREAT THE .PDB FILE ##############################################
+        lambdaTypeNames = []
+        for lambdaType in universe.get('ph_lambdaTypes'):
+            lambdaTypeNames.append(lambdaType.d_resname)
 
-    # print("lambdaTypeNames", lambdaTypeNames)         # debug
-    # print("LambdaTypeBaseNames", lambdaTypeBaseNames) # debug
+        lambdaTypeBaseNames = []
+        for lambdaTypeName in lambdaTypeNames:
+            lambdaTypeBaseNames.append(lambdaTypeName[0:3])
 
-    if (universe.get("ph_constantpH")):
+        # print("lambdaTypeNames", lambdaTypeNames)         # debug
+        # print("LambdaTypeBaseNames", lambdaTypeBaseNames) # debug
+
         # If we use our default force field:
         if (d_modelFF == "charmm36-mar2019"):
             utils.update("generate", "using our default ({}) force field...".format(d_modelFF))
@@ -90,7 +105,7 @@ def generate(d_modelFF, d_modelWater, d_terministring=""):
         # Warn user if we use something different than charmm36-mar2019
         else:
             utils.warning("generate", "using an unknown ({}) force field!".format(d_modelFF))
-            utils.warning("generate", "pHbuilder was made for charmm36-mar2019(-m4). All bets are off...".format(d_modelFF))
+            utils.warning("generate", "pHbuilder was made for charmm36-mar2019(-m4). All bets are off...")
 
         residues = universe.get('d_residues')
 
@@ -102,14 +117,12 @@ def generate(d_modelFF, d_modelWater, d_terministring=""):
         universe.add('d_residues', residues)
         protein.write("{}_PR1.pdb".format(universe.get('d_pdbName')))
 
-    # USER UPDATE STUFF ########################################################
-    countACID = 0
-    for resname in lambdaTypeNames:
-        countACID += protein.countRes(resname)
-
-    # If constant-pH is on,
-    if universe.get('ph_constantpH'):
+        # USER UPDATE STUFF ####################################################
         utils.update("generate", 'constant-pH is turned on...')
+
+        countACID = 0
+        for resname in lambdaTypeNames:
+            countACID += protein.countRes(resname)
         
         # and we have at least one protonatable reside,
         if countACID > 0:

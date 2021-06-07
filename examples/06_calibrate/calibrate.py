@@ -13,7 +13,7 @@ phbuilder.universe.defineLambdaType(
     atoms   = [' CB ', ' CG ', ' OD1', ' OD2', ' HD2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
     qqB     = [-0.28, 0.62, -0.76, -0.76, 0.00],
-    dvdl    = [1, 2, 3]
+    dvdl    = [1, 2, 3] # Not relevant for calibration.
     )
 
 phbuilder.universe.defineLambdaType(
@@ -22,10 +22,10 @@ phbuilder.universe.defineLambdaType(
     atoms   = [' CG ', ' CD ', ' OE1', ' OE2', ' HE2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
     qqB     = [-0.28, 0.62, -0.76, -0.76, 0.00],
-    dvdl    = [1, 2, 3]
+    dvdl    = [1, 2, 3] # Not relevant for calibration.
     )
 
-phbuilder.universe.add('ph_BUF_dvdl', [1, 2, 3])
+phbuilder.universe.add('ph_BUF_dvdl', [1, 2, 3]) # Not relevant for calibration.
 
 ################################################################################
 
@@ -35,7 +35,7 @@ phbuilder.write.reset()
 phbuilder.topol.generate("charmm36-mar2019-m4", "tip3p", d_terministring="34")
 
 phbuilder.protein.add_box(d_boxMargin=2.0)
-phbuilder.protein.add_buffer("../../proteins/buffer.pdb", "../../proteins/buffer.itp", ph_bufqqA=[-0.0656, 0.5328, 0.5328], ph_bufqqB=[-0.8476, 0.4238, 0.4238])
+phbuilder.protein.add_buffer()
 phbuilder.protein.add_water()
 
 phbuilder.md.energy_minimize()

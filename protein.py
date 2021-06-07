@@ -151,7 +151,7 @@ def add_box(d_boxMargin, d_boxType='cubic'):
     # To update d_nameList.
     utils.add_to_nameList("{0}_BOX.pdb".format(universe.get('d_pdbName')))
 
-def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0], ph_bufMargin=2.0, attempts=100000):
+def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0], ph_bufMargin=2.5, attempts=100000):
     # This function writes a dummy .pdb containing the default buffer (ion).
     def writeDefaultPDB():
         with open("defaultBuffer.pdb", 'w') as file:
@@ -193,7 +193,7 @@ def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0],
     # Determine whether we use the default or a custom buffer.
     useDefault = False
     if (ph_bufpdbName == "" and ph_bufitpName == ""):
-        utils.update("add_buffer", "using default (builtin) buffer...")
+        utils.update("add_buffer", "using default (built-in) buffer...")
         useDefault = True
     elif (ph_bufpdbName == "" and ph_bufitpName != ""):
         utils.warning("add_buffer", "ph_bufitpName not specified, resorting to default buffer!")
@@ -201,6 +201,8 @@ def add_buffer(ph_bufpdbName="", ph_bufitpName="", ph_bufqqA=[1], ph_bufqqB=[0],
     elif (ph_bufpdbName != "" and ph_bufitpName == ""):
         utils.warning("add_buffer", "ph_bufpdbName not specified, resorting to default buffer!")
         useDefault = True
+    else:
+        utils.update("add_buffer", "using custom buffer...")
 
     if (useDefault):
         # Check to make sure that the charges for the default buffer are correct.

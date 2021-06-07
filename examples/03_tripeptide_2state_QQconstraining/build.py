@@ -2,11 +2,12 @@
 
 import phbuilder
 
+# Set some pH-related data members in universe:
 phbuilder.universe.add('ph_constantpH', True)
-phbuilder.universe.add('ph_QQleveling', 0)
+phbuilder.universe.add('ph_QQleveling', 2)
 
 phbuilder.universe.defineLambdaType(
-    resname = 'ASPT',
+    resname = 'ASPT', 
     pKa     = 3.65,
     atoms   = [' CB ', ' CG ', ' OD1', ' OD2', ' HD2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
@@ -15,7 +16,7 @@ phbuilder.universe.defineLambdaType(
     )
 
 phbuilder.universe.defineLambdaType(
-    resname = 'GLUT',
+    resname = 'GLUT', 
     pKa     = 4.25,
     atoms   = [' CG ', ' CD ', ' OE1', ' OE2', ' HE2'],
     qqA     = [-0.21, 0.75, -0.55, -0.61, 0.44],
@@ -27,12 +28,12 @@ phbuilder.universe.add('ph_BUF_dvdl', [837.234, -888.419, -70.346, -402.684, 103
 
 ################################################################################
 
-phbuilder.protein.process('/home/anton/GIT/phbuilder/proteins/ASP_tri.pdb')
+phbuilder.protein.process('../../proteins/ASP_tri.pdb')
 
 phbuilder.write.reset()
 phbuilder.topol.generate("charmm36-mar2019-m4", "tip3p", d_terministring="34")
 
-phbuilder.protein.add_box(d_boxMargin=1.8)
+phbuilder.protein.add_box(d_boxMargin=2.0)
 phbuilder.protein.add_buffer()
 phbuilder.protein.add_water()
 phbuilder.protein.add_ions()
@@ -41,6 +42,8 @@ phbuilder.md.energy_minimize()
 phbuilder.md.energy_tcouple()
 phbuilder.md.energy_pcouple()
 
-phbuilder.md.gen_mdp('MD', nsteps=50000, nstxout=10000, sameSeed=True)
+phbuilder.md.gen_mdp('MD', nsteps=100000, nstxout=10000)
+phbuilder.md.gen_constantpH(ph_pH=3.65, ph_lambdaM=5.0, ph_nstout=500, ph_barrierE=7.5)
 phbuilder.write.run(gmxPath="/usr/local/gromacs_test2", options="-pme cpu")
-phbuilder.md.gen_constantpH(ph_pH=3.65, ph_lambdaM=5.0, ph_nstout=100, ph_barrierE=0.0)
+
+phbuilder.universe.inspect()

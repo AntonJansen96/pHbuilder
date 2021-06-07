@@ -11,7 +11,7 @@ def reset():
         file.write("else\n")
         file.write("\trm -rf \\_\\_py* charmm*\n")
         file.write("\trm -f *.itp *.top *.mdp *.tpr *.log *.ndx *.edr *.trr *.xtc *.cpt *.dat *.pdf *.xvg\n")
-        file.write("\trm -f \\#*\\#\n")
+        file.write("\trm -f \\#*\\# EM.pdb NVT.pdb NPT.pdb MD.pdb \n")
         file.write("\trm -f step*.pdb buffer.pdb %s_*.pdb\n" % universe.get('d_pdbName'))
         file.write("\trm -f run.sh reset.sh jobscript.sh universe\n")                   
         file.write("fi\n\n")
@@ -19,7 +19,7 @@ def reset():
         file.write("if [ \"${var}\" = \"y\" ]\nthen\n")
         file.write("\trm -rf \\_\\_py* charmm*\n")
         file.write("\trm -f *.itp *.top *.mdp *.tpr *.log *.ndx *.edr *.trr *.xtc *.cpt *.dat *.pdf *.xvg\n")
-        file.write("\trm -f \\#*\\#\n")
+        file.write("\trm -f \\#*\\# EM.pdb NVT.pdb NPT.pdb MD.pdb \n")
         file.write("\trm -f step*.pdb buffer.pdb %s_*.pdb\n" % universe.get('d_pdbName'))
         file.write("\trm -f run.sh reset.sh jobscript.sh universe\n")            
         file.write("fi\n\n")
@@ -45,7 +45,7 @@ def run(gmxPath="/usr/local/gromacs", options=""):
         file.write("source {0}/bin/GMXRC\n\n".format(gmxPath))
 
         file.write("gmx grompp -f MD.mdp -c {0} -p topol.top -n index.ndx -o MD.tpr -r {0}\n".format(universe.get('d_nameList')[-1]))
-        file.write("gmx mdrun -deffnm MD -v -c {0}_MD.pdb -x MD.xtc {1}\n".format(universe.get('d_pdbName'), options))
+        file.write("gmx mdrun -v -deffnm MD -c MD.pdb -x MD.xtc {0}\n".format(options))
 
     os.system("chmod +x run.sh")
 
@@ -93,6 +93,6 @@ def jobscript(jobName, jobTime, nodes, ntasks, queue):
     file.write("gmx grompp -f MD.mdp -c {0} -p topol.top -n index.ndx -o MD.tpr -r {0}\n".format(universe.get('d_nameList')[-1]))
     
     if universe.get('ph_constantpH'):
-        file.write("gmx mdrun -deffnm MD -c {0}_MD.pdb -x MD.xtc -pme cpu -ntmpi 1\n".format(universe.get('d_pdbName')))
+        file.write("gmx mdrun -deffnm MD -c MD.pdb -x MD.xtc -ntmpi 1 -pme cpu\n")
     else:
-        file.write("gmx mdrun -deffnm MD -c {0}_MD.pdb -x MD.xtc\n".format(universe.get('d_pdbName')))
+        file.write("gmx mdrun -deffnm MD -c MD.pdb -x MD.xtc\n")

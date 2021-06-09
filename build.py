@@ -42,5 +42,5 @@ phbuilder.md.energy_tcouple()
 phbuilder.md.energy_pcouple()
 
 phbuilder.md.gen_mdp('MD', nsteps=50000, nstxout=10000, sameSeed=True)
-phbuilder.write.run(gmxPath="/usr/local/gromacs_test2", options="-pme cpu")
+phbuilder.write.run(gmxPath="/usr/local/gromacs_test2")
 phbuilder.md.gen_constantpH(ph_pH=3.65, ph_lambdaM=5.0, ph_nstout=100, ph_barrierE=0.0)

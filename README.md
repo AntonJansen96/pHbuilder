@@ -1,4 +1,4 @@
-<b>Current gromacs-constantph build that can/should be used with pHbuilder is `8f2e207`. </b>
+<b>Current gromacs-constantph build that can/should be used with pHbuilder is `f981a7a` (clean-cpHMD-branch). </b>
 
 <b>Description</b>
 <p>Python-based system builder for constant-pH simulations in Gromacs.</p>
@@ -37,7 +37,7 @@
 | `md.energy_minimize()` <br /> Generate EM.mdp and perform energy minimization. Encapsulates `gmx grompp` and `gmx mdrun`. |
 | `md.energy_tcouple()` <br /> Generate NVT.mdp and perform temperature coupling. Encapsulates `gmx grompp` and `gmx mdrun`. Velocities are generated in this step, and it should not be skipped. |
 | `md.energy_pcouple()` <br /> Generate NPT.mdp and perform pressure coupling. Encapsulates `gmx grompp` and `gmx mdrun`. Can sometimes be skipped for small systems to save time. |
-| `write.run(gmxPath="/usr/local/gromacs", options="")` <br /> Write executable bash file called run.sh which calls `gmx grompp` and `gmx mdrun` for running the simulation. `options` can be used to specify a string for additional parameters for mdrun such as `-pme cpu`, which is currently required when using GPU acceleration. |
+| `write.run(gmxPath="/usr/local/gromacs", options="")` <br /> Write executable bash file called run.sh which calls `gmx grompp` and `gmx mdrun` for running the simulation. `options` can be used to specify a string for additional parameters for mdrun such as `-nsteps`. |
 | `write.reset()` <br /> Write executable bash file called reset.sh which can be used to clean up / delete all generate files. Proceed with caution! |
 
 <br />

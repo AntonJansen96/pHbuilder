@@ -41,7 +41,7 @@ phbuilder.protein.add_water()
 phbuilder.md.energy_minimize()
 phbuilder.md.energy_tcouple()
 phbuilder.md.energy_pcouple()
-phbuilder.write.run(gmxPath="/usr/local/gromacs_test2", options="-pme cpu")
+phbuilder.write.run(gmxPath="/usr/local/gromacs_test2")
 
 # The part where we do the loop to get the mean and standard deviations:
 

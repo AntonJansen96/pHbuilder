@@ -93,6 +93,6 @@ def jobscript(jobName, jobTime, nodes, ntasks, queue):
     file.write("gmx grompp -f MD.mdp -c {0} -p topol.top -n index.ndx -o MD.tpr -r {0}\n".format(universe.get('d_nameList')[-1]))
     
     if universe.get('ph_constantpH'):
-        file.write("gmx mdrun -deffnm MD -c MD.pdb -x MD.xtc -ntmpi 1 -pme cpu\n")
+        file.write("gmx mdrun -deffnm MD -c MD.pdb -x MD.xtc -ntmpi 1\n")
     else:
         file.write("gmx mdrun -deffnm MD -c MD.pdb -x MD.xtc\n")

@@ -50,225 +50,225 @@ def plotlambda(plotBUF=False):
 def glicphstates():
     # EXPERIMENTAL DATA ON PROTONATION STATES AT VARIOUS PH ####################
     biophys = { # also prevost2012
-        'ASP-13'  : 1,
-        'ASP-31'  : 1,
-        'ASP-32'  : 1,
-        'ASP-49'  : 1,
-        'ASP-55'  : 1,
-        'ASP-86'  : 0,
-        'ASP-88'  : 0,
-        'ASP-91'  : 1,
-        'ASP-97'  : 1,
-        'ASP-115' : 1,
-        'ASP-122' : 1,
-        'ASP-136' : 1,
-        'ASP-145' : 1,
-        'ASP-153' : 1,
-        'ASP-154' : 1,
-        'ASP-161' : 1,
-        'ASP-178' : 1,
-        'ASP-185' : 1,
-        'GLU-14'  : 1,
-        'GLU-26'  : 0,
-        'GLU-35'  : 0,
-        'GLU-67'  : 0,
-        'GLU-69'  : 1,
-        'GLU-75'  : 0,
-        'GLU-82'  : 0,
-        'GLU-104' : 1,
-        'GLU-147' : 1,
-        'GLU-163' : 1,
-        'GLU-177' : 0,
-        'GLU-181' : 1,
-        'GLU-222' : 1,
-        'GLU-243' : 0,
-        'GLU-272' : 1,
-        'GLU-282' : 1
+        'ASPT-13'  : 1,
+        'ASPT-31'  : 1,
+        'ASPT-32'  : 1,
+        'ASPT-49'  : 1,
+        'ASPT-55'  : 1,
+        'ASPT-86'  : 0,
+        'ASPT-88'  : 0,
+        'ASPT-91'  : 1,
+        'ASPT-97'  : 1,
+        'ASPT-115' : 1,
+        'ASPT-122' : 1,
+        'ASPT-136' : 1,
+        'ASPT-145' : 1,
+        'ASPT-153' : 1,
+        'ASPT-154' : 1,
+        'ASPT-161' : 1,
+        'ASPT-178' : 1,
+        'ASPT-185' : 1,
+        'GLUT-14'  : 1,
+        'GLUT-26'  : 0,
+        'GLUT-35'  : 0,
+        'GLUT-67'  : 0,
+        'GLUT-69'  : 1,
+        'GLUT-75'  : 0,
+        'GLUT-82'  : 0,
+        'GLUT-104' : 1,
+        'GLUT-147' : 1,
+        'GLUT-163' : 1,
+        'GLUT-177' : 0,
+        'GLUT-181' : 1,
+        'GLUT-222' : 1,
+        'GLUT-243' : 0,
+        'GLUT-272' : 1,
+        'GLUT-282' : 1
     }
 
     nury2010 = { # this is also cheng2010, calimet2013
-        'ASP-13'  : 1,
-        'ASP-31'  : 1,
-        'ASP-32'  : 1,
-        'ASP-49'  : 1,
-        'ASP-55'  : 1,
-        'ASP-86'  : 0,
-        'ASP-88'  : 0,
-        'ASP-91'  : 1,
-        'ASP-97'  : 1,
-        'ASP-115' : 1,
-        'ASP-122' : 1,
-        'ASP-136' : 1,
-        'ASP-145' : 1,
-        'ASP-153' : 1,
-        'ASP-154' : 1,
-        'ASP-161' : 1,
-        'ASP-178' : 1,
-        'ASP-185' : 1,
-        'GLU-14'  : 1,
-        'GLU-26'  : 0,
-        'GLU-35'  : 0,
-        'GLU-67'  : 0,
-        'GLU-69'  : 0,
-        'GLU-75'  : 0,
-        'GLU-82'  : 0,
-        'GLU-104' : 1,
-        'GLU-147' : 1,
-        'GLU-163' : 1,
-        'GLU-177' : 0,
-        'GLU-181' : 1,
-        'GLU-222' : 1,
-        'GLU-243' : 0,
-        'GLU-272' : 1,
-        'GLU-282' : 1
+        'ASPT-13'  : 1,
+        'ASPT-31'  : 1,
+        'ASPT-32'  : 1,
+        'ASPT-49'  : 1,
+        'ASPT-55'  : 1,
+        'ASPT-86'  : 0,
+        'ASPT-88'  : 0,
+        'ASPT-91'  : 1,
+        'ASPT-97'  : 1,
+        'ASPT-115' : 1,
+        'ASPT-122' : 1,
+        'ASPT-136' : 1,
+        'ASPT-145' : 1,
+        'ASPT-153' : 1,
+        'ASPT-154' : 1,
+        'ASPT-161' : 1,
+        'ASPT-178' : 1,
+        'ASPT-185' : 1,
+        'GLUT-14'  : 1,
+        'GLUT-26'  : 0,
+        'GLUT-35'  : 0,
+        'GLUT-67'  : 0,
+        'GLUT-69'  : 0,
+        'GLUT-75'  : 0,
+        'GLUT-82'  : 0,
+        'GLUT-104' : 1,
+        'GLUT-147' : 1,
+        'GLUT-163' : 1,
+        'GLUT-177' : 0,
+        'GLUT-181' : 1,
+        'GLUT-222' : 1,
+        'GLUT-243' : 0,
+        'GLUT-272' : 1,
+        'GLUT-282' : 1
     }
 
     fritsch2011 = {
-        'ASP-13'  : 0,
-        'ASP-31'  : 0,
-        'ASP-32'  : 1,
-        'ASP-49'  : 1,
-        'ASP-55'  : 0,
-        'ASP-86'  : 0,
-        'ASP-88'  : 0,
-        'ASP-91'  : 0,
-        'ASP-97'  : 0,
-        'ASP-115' : 1,
-        'ASP-122' : 1,
-        'ASP-136' : 1,
-        'ASP-145' : 0,
-        'ASP-153' : 0,
-        'ASP-154' : 0,
-        'ASP-161' : 0,
-        'ASP-178' : 0,
-        'ASP-185' : 0,
-        'GLU-14'  : 0,
-        'GLU-26'  : 0,
-        'GLU-35'  : 0,
-        'GLU-67'  : 0,
-        'GLU-69'  : 0,
-        'GLU-75'  : 0,
-        'GLU-82'  : 0,
-        'GLU-104' : 1,
-        'GLU-147' : 0,
-        'GLU-163' : 0,
-        'GLU-177' : 0,
-        'GLU-181' : 0,
-        'GLU-222' : 1,
-        'GLU-243' : 0,
-        'GLU-272' : 0,
-        'GLU-282' : 0
+        'ASPT-13'  : 0,
+        'ASPT-31'  : 0,
+        'ASPT-32'  : 1,
+        'ASPT-49'  : 1,
+        'ASPT-55'  : 0,
+        'ASPT-86'  : 0,
+        'ASPT-88'  : 0,
+        'ASPT-91'  : 0,
+        'ASPT-97'  : 0,
+        'ASPT-115' : 1,
+        'ASPT-122' : 1,
+        'ASPT-136' : 1,
+        'ASPT-145' : 0,
+        'ASPT-153' : 0,
+        'ASPT-154' : 0,
+        'ASPT-161' : 0,
+        'ASPT-178' : 0,
+        'ASPT-185' : 0,
+        'GLUT-14'  : 0,
+        'GLUT-26'  : 0,
+        'GLUT-35'  : 0,
+        'GLUT-67'  : 0,
+        'GLUT-69'  : 0,
+        'GLUT-75'  : 0,
+        'GLUT-82'  : 0,
+        'GLUT-104' : 1,
+        'GLUT-147' : 0,
+        'GLUT-163' : 0,
+        'GLUT-177' : 0,
+        'GLUT-181' : 0,
+        'GLUT-222' : 1,
+        'GLUT-243' : 0,
+        'GLUT-272' : 0,
+        'GLUT-282' : 0
     }
 
     lev2017 = {
-        'ASP-13'  : 1,
-        'ASP-31'  : 1,
-        'ASP-32'  : 1,
-        'ASP-49'  : 1,
-        'ASP-55'  : 1,
-        'ASP-86'  : 1,
-        'ASP-88'  : 1,
-        'ASP-91'  : 1,
-        'ASP-97'  : 1,
-        'ASP-115' : 1,
-        'ASP-122' : 1,
-        'ASP-136' : 1,
-        'ASP-145' : 1,
-        'ASP-153' : 1,
-        'ASP-154' : 1,
-        'ASP-161' : 1,
-        'ASP-178' : 1,
-        'ASP-185' : 1,
-        'GLU-14'  : 1,
-        'GLU-26'  : 0,
-        'GLU-35'  : 0,
-        'GLU-67'  : 0,
-        'GLU-69'  : 0,
-        'GLU-75'  : 0,
-        'GLU-82'  : 0,
-        'GLU-104' : 1,
-        'GLU-147' : 1,
-        'GLU-163' : 1,
-        'GLU-177' : 0,
-        'GLU-181' : 1,
-        'GLU-222' : 1,
-        'GLU-243' : 0,
-        'GLU-272' : 1,
-        'GLU-282' : 1
+        'ASPT-13'  : 1,
+        'ASPT-31'  : 1,
+        'ASPT-32'  : 1,
+        'ASPT-49'  : 1,
+        'ASPT-55'  : 1,
+        'ASPT-86'  : 1,
+        'ASPT-88'  : 1,
+        'ASPT-91'  : 1,
+        'ASPT-97'  : 1,
+        'ASPT-115' : 1,
+        'ASPT-122' : 1,
+        'ASPT-136' : 1,
+        'ASPT-145' : 1,
+        'ASPT-153' : 1,
+        'ASPT-154' : 1,
+        'ASPT-161' : 1,
+        'ASPT-178' : 1,
+        'ASPT-185' : 1,
+        'GLUT-14'  : 1,
+        'GLUT-26'  : 0,
+        'GLUT-35'  : 0,
+        'GLUT-67'  : 0,
+        'GLUT-69'  : 0,
+        'GLUT-75'  : 0,
+        'GLUT-82'  : 0,
+        'GLUT-104' : 1,
+        'GLUT-147' : 1,
+        'GLUT-163' : 1,
+        'GLUT-177' : 0,
+        'GLUT-181' : 1,
+        'GLUT-222' : 1,
+        'GLUT-243' : 0,
+        'GLUT-272' : 1,
+        'GLUT-282' : 1
     }
 
     nemecz2017 = { # also Hu2018
-        'ASP-13'  : 1,
-        'ASP-31'  : 1,
-        'ASP-32'  : 1,
-        'ASP-49'  : 1,
-        'ASP-55'  : 1,
-        'ASP-86'  : 0,
-        'ASP-88'  : 0,
-        'ASP-91'  : 1,
-        'ASP-97'  : 1,
-        'ASP-115' : 1,
-        'ASP-122' : 1,
-        'ASP-136' : 1,
-        'ASP-145' : 1,
-        'ASP-153' : 1,
-        'ASP-154' : 1,
-        'ASP-161' : 1,
-        'ASP-178' : 1,
-        'ASP-185' : 1,
-        'GLU-14'  : 1,
-        'GLU-26'  : 0,
-        'GLU-35'  : 0,
-        'GLU-67'  : 1,
-        'GLU-69'  : 1,
-        'GLU-75'  : 1,
-        'GLU-82'  : 1,
-        'GLU-104' : 1,
-        'GLU-147' : 1,
-        'GLU-163' : 1,
-        'GLU-177' : 1,
-        'GLU-181' : 1,
-        'GLU-222' : 0,
-        'GLU-243' : 0,
-        'GLU-272' : 1,
-        'GLU-282' : 1
+        'ASPT-13'  : 1,
+        'ASPT-31'  : 1,
+        'ASPT-32'  : 1,
+        'ASPT-49'  : 1,
+        'ASPT-55'  : 1,
+        'ASPT-86'  : 0,
+        'ASPT-88'  : 0,
+        'ASPT-91'  : 1,
+        'ASPT-97'  : 1,
+        'ASPT-115' : 1,
+        'ASPT-122' : 1,
+        'ASPT-136' : 1,
+        'ASPT-145' : 1,
+        'ASPT-153' : 1,
+        'ASPT-154' : 1,
+        'ASPT-161' : 1,
+        'ASPT-178' : 1,
+        'ASPT-185' : 1,
+        'GLUT-14'  : 1,
+        'GLUT-26'  : 0,
+        'GLUT-35'  : 0,
+        'GLUT-67'  : 1,
+        'GLUT-69'  : 1,
+        'GLUT-75'  : 1,
+        'GLUT-82'  : 1,
+        'GLUT-104' : 1,
+        'GLUT-147' : 1,
+        'GLUT-163' : 1,
+        'GLUT-177' : 1,
+        'GLUT-181' : 1,
+        'GLUT-222' : 0,
+        'GLUT-243' : 0,
+        'GLUT-272' : 1,
+        'GLUT-282' : 1
     }
 
     ullman = { # unpublished
-        'ASP-13'  : 1,
-        'ASP-31'  : 1,
-        'ASP-32'  : 1,
-        'ASP-49'  : 1,
-        'ASP-55'  : 1,
-        'ASP-86'  : 1,
-        'ASP-88'  : 1,
-        'ASP-91'  : 1,
-        'ASP-97'  : 1,
-        'ASP-115' : 1,
-        'ASP-122' : 1,
-        'ASP-136' : 1,
-        'ASP-145' : 1,
-        'ASP-153' : 1,
-        'ASP-154' : 1,
-        'ASP-161' : 1,
-        'ASP-178' : 1,
-        'ASP-185' : 1,
-        'GLU-14'  : 1,
-        'GLU-26'  : 0,
-        'GLU-35'  : 0,
-        'GLU-67'  : 0,
-        'GLU-69'  : 0,
-        'GLU-75'  : 0,
-        'GLU-82'  : 1,
-        'GLU-104' : 1,
-        'GLU-147' : 0,
-        'GLU-163' : 0,
-        'GLU-177' : 0,
-        'GLU-181' : 1,
-        'GLU-222' : 1,
-        'GLU-243' : 0,
-        'GLU-272' : 0,
-        'GLU-282' : 1
+        'ASPT-13'  : 1,
+        'ASPT-31'  : 1,
+        'ASPT-32'  : 1,
+        'ASPT-49'  : 1,
+        'ASPT-55'  : 1,
+        'ASPT-86'  : 1,
+        'ASPT-88'  : 1,
+        'ASPT-91'  : 1,
+        'ASPT-97'  : 1,
+        'ASPT-115' : 1,
+        'ASPT-122' : 1,
+        'ASPT-136' : 1,
+        'ASPT-145' : 1,
+        'ASPT-153' : 1,
+        'ASPT-154' : 1,
+        'ASPT-161' : 1,
+        'ASPT-178' : 1,
+        'ASPT-185' : 1,
+        'GLUT-14'  : 1,
+        'GLUT-26'  : 0,
+        'GLUT-35'  : 0,
+        'GLUT-67'  : 0,
+        'GLUT-69'  : 0,
+        'GLUT-75'  : 0,
+        'GLUT-82'  : 1,
+        'GLUT-104' : 1,
+        'GLUT-147' : 0,
+        'GLUT-163' : 0,
+        'GLUT-177' : 0,
+        'GLUT-181' : 1,
+        'GLUT-222' : 1,
+        'GLUT-243' : 0,
+        'GLUT-272' : 0,
+        'GLUT-282' : 1
     }
 
     # DIRECTORY STRUCTURE ######################################################
@@ -284,7 +284,7 @@ def glicphstates():
     residList   = []
     chainList   = []
     for residue in universe.get('d_residues'):
-        if residue.d_resname in ["ASP", "GLU"]:
+        if residue.d_resname in ["ASPT", "GLUT"]:
             resnameList.append(residue.d_resname)
             residList.append(residue.d_resid)
             chainList.append(residue.d_chain)
@@ -292,52 +292,50 @@ def glicphstates():
     # CREATE LAMBDA PLOT FOR EVERY INDIVIDUAL PROTONATABLE RESIDUE #############
 
     # Loop through all the lambdas:
-    # for idx in range(1, len(resnameList) + 1):
+    for idx in range(1, len(resnameList) + 1):
         
-    #     plt.figure(figsize=(8, 6))
+        plt.figure(figsize=(8, 6))
 
-    #     # Update user
-    #     print("plotting {}/{}".format(idx, len(resnameList)), end='\r')
+        # Update user
+        print("plotting {}/{}".format(idx, len(resnameList)), end='\r')
         
-    #     # Load columns from .dat files
-    #     t = load.Col("lambda_{0}.dat".format(idx), 1)
-    #     x = load.Col("lambda_{0}.dat".format(idx), 2)
+        # Load columns from .dat files
+        t = load.Col("lambda_{0}.dat".format(idx), 1)
+        x = load.Col("lambda_{0}.dat".format(idx), 2)
         
-    #     # Analyze a running sim not all columns will be equal long so trim:
-    #     if len(t) > len(x):
-    #         t.pop()
-    #     elif len(t) < len(x):
-    #         x.pop()
+        # If we had a crash, then the last line may not have been completely written.
+        if len(t) > len(x):
+            t.pop()
+        elif len(t) < len(x):
+            x.pop()
 
-    #     plt.plot(t, x, linewidth=0.5)
+        plt.plot(t, x, linewidth=0.5)
 
-    #     # Title
-    #     plt.title("{0}-{1} in chain {2} in {3}.pdb\npH={4}, nstlambda={5}, deprotonation={6:.2f}\n\
-    #         Experimentally determined state for {0}-{1} at this pH = {7}".format(
-    #         resnameList[idx-1], 
-    #         residList[idx-1],
-    #         chainList[idx-1],
-    #         universe.get('d_pdbName'),
-    #         universe.get('ph_pH'),
-    #         universe.get('ph_nstout'),
-    #         titrate("lambda_{}.dat".format(idx)), 
-    #         expVals40["{0}-{1}".format(resnameList[idx-1], residList[idx-1])]
-    #         ))
+        # Title
+        plt.title("{0}-{1} in chain {2} in {3}.pdb\npH={4}, nstlambda={5}, deprotonation={6:.2f}".format(
+            resnameList[idx - 1],
+            residList[idx - 1],
+            chainList[idx - 1],
+            universe.get('d_pdbName'),
+            universe.get('ph_pH'),
+            universe.get('ph_nstout'),
+            titrate("lambda_{}.dat".format(idx))
+        ))
 
-    #     # Axes and stuff
-    #     plt.ylim(-0.1, 1.1)
-    #     plt.xlabel("Time (ps)")
-    #     plt.ticklabel_format(axis='x', style='sci', scilimits=(0, 3))
-    #     plt.ylabel(r"$\lambda$-coordinate")
-    #     plt.grid()
+        # Axes and stuff
+        plt.ylim(-0.1, 1.1)
+        plt.xlabel("Time (ps)")
+        plt.ticklabel_format(axis='x', style='sci', scilimits=(0, 3))
+        plt.ylabel(r"$\lambda$-coordinate")
+        plt.grid()
 
-    #     # Save.
-    #     fileName = "{}/{}_{}-{:03d}".format(dirname, chainList[idx-1], resnameList[idx-1], residList[idx-1])
-    #     # plt.savefig("{}.pdf".format(fileName)); os.system("pdfcrop {0}.pdf {0}.pdf >> /dev/null 2>&1".format(fileName))
-    #     plt.savefig("{}.png".format(fileName))
+        # Save.
+        fileName = "{}/{}_{}-{:03d}".format(dirname, chainList[idx-1], resnameList[idx-1], residList[idx-1])
+        # plt.savefig("{}.pdf".format(fileName)); os.system("pdfcrop {0}.pdf {0}.pdf >> /dev/null 2>&1".format(fileName))
+        plt.savefig("{}.png".format(fileName))
 
-    #     # clf = clear the entire current figure. close = closes a window.
-    #     plt.clf(); plt.close()
+        # clf = clear the entire current figure. close = closes a window.
+        plt.clf(); plt.close()
 
     # CREATE HISTOGRAM PLOTS FOR COMBINED PROTO STATE OF ALL FIVE CHAINS #######
     number_of_chains   = len(set(chainList))
@@ -347,7 +345,8 @@ def glicphstates():
         data = []        
         for jj in range(0, number_of_chains):
             print(ii + residues_per_chain * jj, end=' ')
-            data += (load.Col('lambda_{}.dat'.format(ii + residues_per_chain * jj), 2, 49713, 124320))
+            # data += (load.Col('lambda_{}.dat'.format(ii + residues_per_chain * jj), 2, 49713, 124320))
+            data += (load.Col('lambda_{}.dat'.format(ii + residues_per_chain * jj), 2))
         print()
 
         # PLOTTING STUFF #######################################################

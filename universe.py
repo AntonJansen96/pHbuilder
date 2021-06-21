@@ -1,4 +1,4 @@
-import shelve
+import shelve, utils
 
 # Set/update variable to universe.
 def add(varName, value):
@@ -54,7 +54,13 @@ def defineLambdaType(resname, pKa, atoms, qqA, qqB, dvdl):
     NewLambdaType = LambdaType(resname, pKa, atoms, qqA, qqB, dvdl)
     if has('ph_lambdaTypes'):
         temp = get('ph_lambdaTypes')
-        temp.append(NewLambdaType)
-        add('ph_lambdaTypes', temp)
+        
+        for entry in temp:
+            if entry.d_resname == NewLambdaType.d_resname:
+                utils.update("defineLambdaType", "LambdaType {} is already defined in ph_lambdaTypes. Skipping...".format(NewLambdaType.d_resname))
+                break
+        else:
+            temp.append(NewLambdaType)
+            add('ph_lambdaTypes', temp)
     else:
         add('ph_lambdaTypes', [NewLambdaType])

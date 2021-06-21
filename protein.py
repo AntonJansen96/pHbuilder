@@ -12,7 +12,7 @@ class Residue: # Stores a single residue's data.
         self.d_y       = y          # list      holds y-coordinates
         self.d_z       = z          # list      holds z-coordinatees
 
-def process(fname, d_model=1, d_ALI='A', d_chain=[], resetResId=False):
+def process(fname, d_model=1, d_ALI='A', d_chain=[]):
     basename = os.path.basename(fname)
     universe.add('d_pdbName', basename[0:len(basename)-4])
     universe.add('d_model', d_model)

@@ -1,6 +1,6 @@
 import universe, utils
 
-def gen_mdp(Type, nsteps=25000, nstxout=0, posres=False, sameSeed=False):
+def gen_mdp(Type, nsteps, nstxout=0, posres=False, sameSeed=False):
     # HEAD
     if (Type not in ['EM', 'NVT', 'NPT', 'MD']):
         raise Exception("Unknown .mdp Type specified. Types are: EM, NVT, NPT, MD.")

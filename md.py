@@ -3,8 +3,8 @@ import os, universe, utils
 from mdp import gen_mdp
 from constantph import gen_constantpH
 
-def energy_minimize():
-    gen_mdp('EM')
+def energy_minimize(nsteps=25000):
+    gen_mdp('EM', nsteps=nsteps)
 
     utils.update("energy_minimize", "running gmx grompp and mdrun for energy minimization...")
 
@@ -13,8 +13,8 @@ def energy_minimize():
 
     utils.add_to_nameList("EM.pdb")
 
-def energy_tcouple():
-    gen_mdp('NVT')
+def energy_tcouple(nsteps=25000):
+    gen_mdp('NVT', nsteps=nsteps)
 
     utils.update("energy_tcouple", "running gmx grompp and mdrun for temperature coupling...")
 
@@ -23,8 +23,8 @@ def energy_tcouple():
 
     utils.add_to_nameList("NVT.pdb")
 
-def energy_pcouple():
-    gen_mdp('NPT')
+def energy_pcouple(nsteps=25000):
+    gen_mdp('NPT', nsteps=nsteps)
 
     utils.update("energy_pcouple", "running gmx grompp and mdrun for pressure coupling...")
 

@@ -73,13 +73,13 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
     file.write('\n')
 
     # PART 2 - WRITE RESIDUE-TYPE SPECIFIC STUFF ###############################
+    def to_string(Input):
+        string = ""
+        for element in Input:
+            string += "{:.3f} ".format(element)
+        return string
+    
     def writeBlock(number, name, dvdl, pKa, ph_barrierE, qqA, qqB):
-        def to_string(Input):
-            string = ""
-            for element in Input:
-                string += "{:.3f} ".format(element)
-            return string
-
         addParam('lambda-dynamics-residue%s-name'              % (number), name)
         addParam('lambda-dynamics-residue%s-dvdl-coefficients' % (number), to_string(dvdl))
         addParam('lambda-dynamics-residue%s-reference-pka'     % (number), pKa)
@@ -100,6 +100,9 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
         # This if-statement prevents writing a block when there are no residues of this type.
         if (obj.d_resname in lambdaResidueTypeList):
             # If we use "charge-coupling" (1) scheme, extend the charge states:
+            utils.update('gen_constantpH', 'reversing specified dV/dls for {} ({})'.format(obj.d_resname, to_string(obj.d_dvdl)))
+            utils.update('gen_constantpH', 'to {} for internal use...'.format(to_string(obj.d_dvdl[::-1])))
+
             if (universe.get('ph_QQleveling') == 1):
                 writeBlock(idx, obj.d_resname, obj.d_dvdl[::-1], obj.d_pKa, ph_barrierE, obj.d_qqA + BUF_qqB, obj.d_qqB + BUF_qqA)
             else:

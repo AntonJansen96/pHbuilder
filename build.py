@@ -3,7 +3,7 @@
 import phbuilder
 
 phbuilder.universe.add('ph_constantpH', True)
-phbuilder.universe.add('ph_QQleveling', 0)
+phbuilder.universe.add('ph_QQleveling', 2)
 
 phbuilder.universe.defineLambdaType(
     resname = 'ASPT',
@@ -37,9 +37,9 @@ phbuilder.protein.add_buffer()
 phbuilder.protein.add_water()
 phbuilder.protein.add_ions()
 
-phbuilder.md.energy_minimize()
-phbuilder.md.energy_tcouple()
-phbuilder.md.energy_pcouple()
+phbuilder.md.energy_minimize(nsteps=5000)
+phbuilder.md.energy_tcouple(nsteps=5000)
+phbuilder.md.energy_pcouple(nsteps=5000)
 
 phbuilder.md.gen_mdp('MD', nsteps=50000, nstxout=10000, sameSeed=True)
 phbuilder.write.run(gmxPath="/usr/local/gromacs_test2")

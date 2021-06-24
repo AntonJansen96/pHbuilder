@@ -1,11 +1,11 @@
 import universe, utils
 
-def gen_mdp(Type, nsteps, nstxout=0, posres=False, sameSeed=False):
+def gen_mdp(Type, nsteps, nstxout=0, sameSeed=False):
     # HEAD
     if (Type not in ['EM', 'NVT', 'NPT', 'MD']):
         raise Exception("Unknown .mdp Type specified. Types are: EM, NVT, NPT, MD.")
 
-    utils.update("gen_mdp", "Type={0}, nsteps={1}, nstxout={2}, posres={3}".format(Type, nsteps, nstxout, posres))
+    utils.update("gen_mdp", "Type={0}, nsteps={1}, nstxout={2}".format(Type, nsteps, nstxout))
 
     file = open("{0}.mdp".format(Type), 'w')
 
@@ -20,19 +20,16 @@ def gen_mdp(Type, nsteps, nstxout=0, posres=False, sameSeed=False):
 
     # POSITION RESTRAIN SECTION
     if Type in ['EM', 'MD']:
-        if universe.get('ph_constantpH') and universe.get('ph_QQleveling') in [1, 2] and posres:
-            addTitle('Position restrain')
-            addParam('define', '-DPOSRES -DPOSRES_BUF', 'Position restraints.')
-        elif universe.get('ph_constantpH') and universe.get('ph_QQleveling') in [1, 2]:
-            addTitle('Position restrain')
-            addParam('define', '-DPOSRES_BUF', 'Position restraints.')
+        if universe.get('ph_constantpH') and universe.get('ph_QQleveling') in [1, 2]:
+            addTitle('Position restraints')
+            addParam('define', '-DPOSRES_BUF', 'Position restrain the buffer.')
 
-    if (Type in ['NVT', 'NPT']): # position restrain temp and press coupling.
+    if (Type in ['NVT', 'NPT']): # position restrain everything for temp and press coupling.
         addTitle('Position restrain')
         if universe.get('ph_constantpH') and universe.get('ph_QQleveling') in [1, 2]:
-            addParam('define', '-DPOSRES -DPOSRES_BUF', 'Position restraints.')
+            addParam('define', '-DPOSRES -DPOSRES_BUF', 'Position restrain protein and buffer.')
         else:
-            addParam('define', '-DPOSRES', 'Position restraints.')
+            addParam('define', '-DPOSRES', 'Position restrain protein.')
 
     # RUN CONTROL
     addTitle("Run control")
@@ -51,9 +48,11 @@ def gen_mdp(Type, nsteps, nstxout=0, posres=False, sameSeed=False):
     addParam('nsteps', nsteps, '%.1f ns.' % ((dt * nsteps)/1000.0))
 
     # We restrain the COM to prevent protein from coming too close to the BUFs.
-    if Type == 'MD' and universe.get('ph_QQleveling') in [1, 2]:
-        addParam('comm-mode', 'Linear', 'Remove center of mass translation.')
+    if (Type == 'MD' and universe.get('ph_QQleveling') in [1, 2]):
+        addParam('comm-mode', 'Linear-acceleration-correction', 'Remove COM velocity and correct COM positions.')
         addParam('comm-grps', 'Protein Non-Protein')
+        addParam("nstcomm", 10, 'Frequence for COM motion removal.')
+        addParam("nstcalcenergy", 10, 'Required as nstcomm is otherwise set to nstcalcenergy.')
 
     # OUTPUT CONTROL
     addTitle("Output control")

@@ -64,10 +64,10 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
     # If we use the charge leveling scheme "charge-restraining" (2) we also have
     # the BUF residue-type as well as one extra lambda group containing all the BUFs.
     if (universe.get('ph_QQleveling') == 2):
-        addParam('lambda-dynamics-number-lambda-residues', len(lambdaResidueTypeList) + 1)
+        addParam('lambda-dynamics-number-lambda-group-types', len(lambdaResidueTypeList) + 1)
         addParam('lambda-dynamics-number-atom-collections', len(lambdaResidueNameList) + 1)
     else:
-        addParam('lambda-dynamics-number-lambda-residues', len(lambdaResidueTypeList))
+        addParam('lambda-dynamics-number-lambda-group-types', len(lambdaResidueTypeList))
         addParam('lambda-dynamics-number-atom-collections', len(lambdaResidueNameList))
 
     file.write('\n')
@@ -80,12 +80,12 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
         return string
     
     def writeBlock(number, name, dvdl, pKa, ph_barrierE, qqA, qqB):
-        addParam('lambda-dynamics-residue%s-name'              % (number), name)
-        addParam('lambda-dynamics-residue%s-dvdl-coefficients' % (number), to_string(dvdl))
-        addParam('lambda-dynamics-residue%s-reference-pka'     % (number), pKa)
-        addParam('lambda-dynamics-residue%s-barrier'           % (number), ph_barrierE)
-        addParam('lambda-dynamics-residue%s-charges-state-A'   % (number), to_string(qqA))
-        addParam('lambda-dynamics-residue%s-charges-state-B'   % (number), to_string(qqB))
+        addParam('lambda-dynamics-group-type%s-name'              % (number), name)
+        addParam('lambda-dynamics-group-type%s-dvdl-coefficients' % (number), to_string(dvdl))
+        addParam('lambda-dynamics-group-type%s-reference-pka'     % (number), pKa)
+        addParam('lambda-dynamics-group-type%s-barrier'           % (number), ph_barrierE)
+        addParam('lambda-dynamics-group-type%s-charges-state-A'   % (number), to_string(qqA))
+        addParam('lambda-dynamics-group-type%s-charges-state-B'   % (number), to_string(qqB))
 
         file.write('\n')
 
@@ -114,18 +114,17 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
         writeBlock(idx, 'BUF', universe.get('ph_BUF_dvdl')[::-1], 0, 0, BUF_qqA, BUF_qqB)
 
     # PART 3 - WRITE INDIVIDUAL RESIDUE/LAMBDA-GROUP STUF ######################
-    def writeResBlock(number, name, indexLambda, indexName):
+    def writeResBlock(number, name, indexName):
         addParam('lambda-dynamics-atom-set%s-name'                  % (number), name)
-        addParam('lambda-dynamics-atom-set%s-lambda-residues-index' % (number), indexLambda)
         addParam('lambda-dynamics-atom-set%s-index-group-name'      % (number), indexName)
         addParam('lambda-dynamics-atom-set%s-initial-lambda'        % (number), lambdaInit)
-        
+
         if (universe.get('ph_QQleveling') == 2):
             addParam('lambda-dynamics-atom-set%s-charge-restraint-group-index' % (number), 1)
 
         if (name == 'BUF'):
-            addParam('lambda-dynamics-atom-set%s-buffer-residue' % (number), 'yes')
-            addParam('lambda-dynamics-atom-set%s-buffer-residue-multiplier' % (number), universe.get('ph_bufnmol'))
+            addParam('lambda-dynamics-atom-set%s-buffer-residue' % number, 'yes')
+            addParam('lambda-dynamics-atom-set%s-buffer-residue-multiplier' % number, universe.get('ph_bufnmol'))
 
         file.write('\n')
 
@@ -133,11 +132,11 @@ def gen_constantpH(ph_pH, ph_lambdaM, ph_nstout, ph_barrierE, cal=False, lambdaI
 
     idx = 1
     for name in lambdaResidueNameList:
-        writeResBlock(idx, name, lambdaResidueTypeList.index(name) + 1, 'LAMBDA{}'.format(idx))
+        writeResBlock(idx, name, 'LAMBDA{}'.format(idx))
         idx += 1
 
     if (universe.get('ph_QQleveling') == 2):
-        writeResBlock(idx, 'BUF', len(lambdaResidueTypeList) + 1, 'LAMBDA{}'.format(len(lambdaResidueNameList) + 1))
+        writeResBlock(idx, 'BUF', 'LAMBDA{}'.format(len(lambdaResidueNameList) + 1))
 
     file.close() # MD.mdp
 

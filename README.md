@@ -1,4 +1,4 @@
-<b>Current gromacs-constantph build that can/should be used with pHbuilder is `f981a7a` (clean-cpHMD-branch). </b>
+<b>Current gromacs-constantph build that can/should be used with pHbuilder is `96b3b6a` (clean-cpHMD-branch). </b>
 
 <b>Description</b>
 <p>Python-based system builder for constant-pH simulations in Gromacs.</p>
